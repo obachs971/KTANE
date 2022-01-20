@@ -91,26 +91,7 @@ public class ForeignExchangeRates
 			Scanner s = new Scanner(u.openStream());
 			String input = s.nextLine();
 			s.close();
-			int cursor = 0;
-			int counter = 0;
-			for(int aa = 0; aa < input.length(); aa++)
-			{
-				if(input.charAt(aa) == ':')
-				{
-					cursor = aa + 1;
-					counter++;
-				}
-				if(counter == 2)
-					break;
-			}
-			int start = cursor;
-			while(true)
-			{
-				cursor++;
-				if(input.charAt(cursor) == '}')
-					break;
-			}
-			String temp = input.substring(start, cursor);
+			String temp = input.substring(input.lastIndexOf(":") + 1, (input.lastIndexOf("}") - 1));
 			double total = Double.parseDouble(temp) * Integer.parseInt(info[2]);
 			String number;
 			if(total < 10)

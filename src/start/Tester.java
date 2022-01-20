@@ -41,12 +41,12 @@ public class Tester
 		System.out.println((r.nextInt(3) + 1));
 		
 		//BombConfig con = new BombConfig();
-		//BombEdgework e = new BombEdgework(resizer);
+		BombEdgework e = new BombEdgework(resizer);
 		
 		int num = 0;
 		while(num == 0)
 		{
-			SymbolicPassword test = new SymbolicPassword(resizer);
+		    ForeignExchangeRates test = new ForeignExchangeRates(e);
 			test.run();
 			
 
