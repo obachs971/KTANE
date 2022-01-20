@@ -82,9 +82,9 @@ public class ForeignExchangeRates
 		}
 		String urlLink;
 		if(ew.BAT() >= 2)
-			urlLink = "https://api.exchangeratesapi.io/latest?base=" + info[1] +"&symbols=" + info[0];
+			urlLink = "https://api.exchangerate.host/latest?base=" + info[1] +"&symbols=" + info[0];
 		else
-			urlLink = "https://api.exchangeratesapi.io/latest?base=" + info[0] +"&symbols=" + info[1];
+			urlLink = "https://api.exchangerate.host/latest?base=" + info[0] +"&symbols=" + info[1];
 		try
 		{
 			URL u = new URL(urlLink);
