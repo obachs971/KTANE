@@ -1,4 +1,5 @@
 package modules;
+
 import javax.swing.JOptionPane;
 
 import start.BombEdgework;
@@ -48,17 +49,13 @@ public class TicTacToe
 			row--;
 		}
 		//Entering the board
-		for(int aa = 0; aa < 3; aa++)
+		board = JOptionPane.showInputDialog("Enter the board in reading order:").toUpperCase().replace(" ", "");
+		boolean v = v1(board);
+		while(!(v))
 		{
-			String input = JOptionPane.showInputDialog("Enter row #" + (aa + 1) + ":").toUpperCase();
-			boolean v = v1(input, board);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Enter row #" + (aa + 1) + ":").toUpperCase();
-				v = v1(input, board);
-			}
-			board = board + "" + input.toUpperCase();
+			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
+			board = JOptionPane.showInputDialog("Enter the board in reading order:").toUpperCase().replace(" ", "");
+			v = v1(board);
 		}
 		String souv = "BOARD SETUP:\n" + board.charAt(0) + " " + board.charAt(1) + " " + board.charAt(2) + "\n" + board.charAt(3) + " " + board.charAt(4) + " " + board.charAt(5) + "\n" + board.charAt(6) + " " + board.charAt(7) + " " + board.charAt(8);
 		for(int aa = 0; aa < board.length(); aa++)
@@ -72,7 +69,7 @@ public class TicTacToe
 		while((x + o) < 9)
 		{
 			String out, input = JOptionPane.showInputDialog("Enter the next letter:").toUpperCase();
-			boolean v = v2(input);
+			v = v2(input);
 			while(!(v))
 			{
 				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
@@ -253,17 +250,15 @@ public class TicTacToe
 		return !(isTicTacToe(board.replace(nums.charAt(0), 'X'), board.indexOf(nums.charAt(0))) || isTicTacToe(board.replace(nums.charAt(0), 'O'), board.indexOf(nums.charAt(0))));
 	}
 	//Validation of the board input
-	private boolean v1(String i, String board)
+	private boolean v1(String i)
 	{
-		if(i.length() == 3)
+		if(i.length() == 9)
 		{
-			for(int aa = 0; aa < i.length(); aa++)
+			String temp = i.replace("X", "").replace("O", "");
+			for(int aa = 0; aa < temp.length(); aa++)
 			{
-				if("XO".indexOf(i.charAt(aa)) < 0)
-				{
-					if("123456789".indexOf(i.charAt(aa)) < 0 || board.indexOf(i.charAt(aa)) >= 0)
-						return false;
-				}
+				if("123456789".indexOf(temp.charAt(aa)) < 0 || temp.substring(0, aa).indexOf(temp.charAt(aa)) >= 0)
+					return false;
 			}
 			return true;
 		}

@@ -1,9 +1,15 @@
 package modules;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -12,6 +18,7 @@ import start.BombEdgework;
 
 public class OnlyConnect 
 {
+	private ArrayList<String> symbols;
 	private final String[][] languages =
 		{
 				{"ABCDEFGHIJKLMNOPQRSTUVXYZ", "C CEDILLA", "E UMLAUT"},
@@ -45,60 +52,22 @@ public class OnlyConnect
 	}
 	public String run()
 	{
+		String[] pos = {"TL", "TM", "TR", "BL", "BM", "BR"};
 		//Round 1
-		String input = JOptionPane.showInputDialog("TR - Two Reeds\nL - Lion\nTF - Twisted Flax\nHV - Horned Viper\nW - Water\nEH - Eye of Horus\nEnter the 6 symbols in\nreading order (spaces):").toUpperCase();
-		boolean v = v1(input);
-		while(!(v))
-		{
-			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-			input = JOptionPane.showInputDialog("TR - Two Reeds\nL - Lion\nTF - Twisted Flax\nHV - Horned Viper\nW - Water\nEH - Eye of Horus\nEnter the 6 symbols in\nreading order (spaces):").toUpperCase();
-			v = v1(input);
-		}
-		String[] symbols = input.split(" ");
-		input = JOptionPane.showInputDialog("Enter the team name:").toUpperCase();
-		input = Round1(symbols, input.toUpperCase());
+		getSymbols();
+		String input = JOptionPane.showInputDialog("Enter the team name:").toUpperCase();
+		input = Round1(input.toUpperCase());
 		while(input.length() == 0)
 		{
 			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-			input = JOptionPane.showInputDialog("TR - Two Reeds\nL - Lion\nTF - Twisted Flax\nHV - Horned Viper\nW - Water\nEH - Eye of Horus\nEnter the 6 symbols in\nreading order (spaces):").toUpperCase();
-			v = v1(input);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("TR - Two Reeds\nL - Lion\nTF - Twisted Flax\nHV - Horned Viper\nW - Water\nEH - Eye of Horus\nEnter the 6 symbols in\nreading order (spaces):").toUpperCase();
-				v = v1(input);
-			}
-			symbols = input.split(" ");
+			getSymbols();
 			input = JOptionPane.showInputDialog("Enter the team name:").toUpperCase();
-			input = Round1(symbols, input.toUpperCase());
+			input = Round1(input.toUpperCase());
 		}
 		JOptionPane.showMessageDialog(null, "Press the " + input);
-		String[] pos = {"TL", "TM", "TR", "BL", "BM", "BR"};
 		String souv = "";
 		for(int aa = 0; aa < 6; aa++)
-		{
-			switch(symbols[aa])
-			{
-				case "TR":
-					souv = souv + "" + pos[aa] + ": TWO REEDS\n";
-					break;
-				case "L":
-					souv = souv + "" + pos[aa] + ": LION\n";
-					break;
-				case "TF":
-					souv = souv + "" + pos[aa] + ": TWISTED FLAX\n";
-					break;
-				case "HV":
-					souv = souv + "" + pos[aa] + ": HORNED VIPER\n";
-					break;
-				case "W":
-					souv = souv + "" + pos[aa] + ": WATER\n";
-					break;
-				case "EH":
-					souv = souv + "" + pos[aa] + ": EYE OF HORUS\n";
-					break;
-			}
-		}
+			souv = souv + pos[aa] + ": " + symbols.get(aa).toUpperCase() + "\n";
 		//Round 2
 		ImageIcon i = new ImageIcon("img/OnlyConnectLetters.jpg");
 		Image image = i.getImage();
@@ -115,7 +84,7 @@ public class OnlyConnect
 		for(int aa = 0; aa < 9; aa++)
 		{
 			characters[aa] = JOptionPane.showInputDialog("Enter character #" + (aa + 1) + ":").toUpperCase();
-			v = v2(characters[aa]);
+			boolean v = v2(characters[aa]);
 			while(!(v))
 			{
 				f.setVisible(false);
@@ -135,7 +104,7 @@ public class OnlyConnect
 			for(int aa = 0; aa < 9; aa++)
 			{
 				characters[aa] = JOptionPane.showInputDialog("Enter character #" + (aa + 1) + ":").toUpperCase();
-				v = v2(characters[aa]);
+				boolean v = v2(characters[aa]);
 				while(!(v))
 				{
 					f.setVisible(false);
@@ -151,14 +120,58 @@ public class OnlyConnect
 		f.setVisible(false);
 		return souv;
 	}
-	private String Round1(String[] symbols, String team)
+	private void getSymbols()
+	{
+		symbols = new ArrayList<String>();
+		JFrame frame = new JFrame();
+		JOptionPane optionPane = new JOptionPane();
+		optionPane.setLayout(new GridLayout(6, 1));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		String[] symbolList = {"Two Reeds", "Lion", "Twisted Flax", "Horned Viper", "Water", "Eye of Horus"};
+		String[] pos = {"TL", "TM", "TR", "BL", "BM", "BR"};
+		ImageIcon[] icon = new ImageIcon[symbolList.length];
+		JButton[] jButton = new JButton[symbolList.length];
+		for(int aa = 0; aa < symbolList.length; aa++)
+		{
+			icon[aa] = new ImageIcon("img/OnlyConnect" + symbolList[aa].replace(" ", "") + ".jpg");
+			Image image = icon[aa].getImage();
+			image = image.getScaledInstance((int)(icon[aa].getIconWidth() / r), (int)(icon[aa].getIconHeight() / r), java.awt.Image.SCALE_SMOOTH);
+			icon[aa] = new ImageIcon(image);
+			jButton[aa] = getButton(optionPane, symbolList[aa], icon[aa]);
+			optionPane.add(jButton[aa]);
+		}
+		for(int aa = 0; aa < 5; aa++)
+		{
+			JDialog dialog = optionPane.createDialog(frame, "");
+			dialog.setTitle("Select the " + pos[aa] + " symbol:");
+			dialog.setVisible(true);
+			optionPane.removeAll();
+			JButton[] temp = new JButton[jButton.length - 1];
+			int cursor = 0;
+			for(int bb = 0; bb < jButton.length; bb++)
+			{
+				if(!(jButton[bb].equals(optionPane.getValue())))
+				{
+					temp[cursor] = jButton[bb];
+					cursor++;
+				}
+			}
+			jButton = temp;
+			for(int bb = 0; bb < jButton.length; bb++)
+				optionPane.add(jButton[bb]);
+			if(jButton.length == 1)
+				symbols.add(jButton[0].getText().toUpperCase());
+		}
+	}
+	private String Round1(String team)
 	{
 		int[] scores = {0, 0, 0, 0, 0, 0}, totals = {0, 0, 0, 0};
-		String[] order = {"TR", "L", "TF", "HV", "W", "EH"}, ports = {"PS/2", "PARALLEL", "RJ-45", "RCA", "SERIAL", "DVI-D"};
+		String[] order = {"TWO REEDS", "LION", "TWISTED FLAX", "HORNED VIPER", "WATER", "EYE OF HORUS"}, ports = {"PS/2", "PARALLEL", "RJ-45", "RCA", "SERIAL", "DVI-D"};
 		String alpha = "ZABCDEFGHIJKLMNOPQRSTUVWXY";
 		for(int aa = 0; aa < 6; aa++)
 		{
-			if(symbols[aa].equals(order[aa]))
+			if(symbols.get(aa).equals(order[aa]))
 				scores[aa]++;
 			char c = ew.getSNCHAR(aa);
 			if(alpha.indexOf(c) < 0)
@@ -169,6 +182,7 @@ public class OnlyConnect
 				scores[aa]++;
 			totals[scores[aa]]++;
 		}
+		//System.out.println(scores[0] + " " + scores[1] + " " + scores[2] + " " + scores[3] + " " + scores[4] + " " + scores[5]);
 		for(int aa = 0; aa < 4; aa++)
 		{
 			if(totals[aa] == 1)
@@ -271,42 +285,6 @@ public class OnlyConnect
 		}
 		return false;
 	}
-	private boolean v1(String i)
-	{
-		String[] conv = i.split(" ");
-		if(conv.length == 6)
-		{
-			boolean[] b = {false, false, false, false, false, false};
-			for(int aa = 0; aa < 6; aa++)
-			{
-				switch(conv[aa])
-				{
-					case "TR":
-						b[0] = true;
-						break;
-					case "L":
-						b[1] = true;
-						break;
-					case "TF":
-						b[2] = true;
-						break;
-					case "HV":
-						b[3] = true;
-						break;
-					case "W":
-						b[4] = true;
-						break;
-					case "EH":
-						b[5] = true;
-						break;
-					default:
-						return false;
-				}
-			}
-			return (b[0] && b[1] && b[2] && b[3] && b[4] && b[5]);
-		}
-		return false;
-	}
 	private boolean v2(String i)
 	{
 		if(i.length() == 1)
@@ -346,5 +324,18 @@ public class OnlyConnect
 		}
 		return false;
 	}
+	private JButton getButton(final JOptionPane optionPane, String name, ImageIcon icon ) {
+	    final JButton button = new JButton();
+	    button.setIcon(icon);
+	    button.setText(name);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(button);
+	        symbols.add(name.toUpperCase());
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
 }
 

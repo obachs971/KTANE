@@ -35,19 +35,13 @@ public class NumberPad
 	}
 	public void run()
 	{
-		String numpad = "";
-		int[] lengths = {3, 3, 3, 1};
-		for(int aa = 0; aa < 4; aa++)
+		String numpad = JOptionPane.showInputDialog("R - Red\nB - Blue\nY - Yellow\nG - Green\nW - White\nEnter the colors of each\nnumber in reading order:").toUpperCase().replace(" ", "");
+		boolean v = valid(numpad);
+		while(!(v))
 		{
-			String input = JOptionPane.showInputDialog("R - Red\nB - Blue\nY - Yellow\nG - Green\nW - White\nEnter the colors on row #" + (aa + 1) + ":").toUpperCase();
-			boolean v = valid(input, lengths[aa]);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("R - Red\nB - Blue\nY - Yellow\nG - Green\nW - White\nEnter the colors on row #" + (aa + 1) + ":").toUpperCase();
-				v = valid(input, lengths[aa]);
-			}
-			numpad = numpad + "" + input.toUpperCase();
+			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
+			numpad = JOptionPane.showInputDialog("R - Red\nB - Blue\nY - Yellow\nG - Green\nW - White\nEnter the colors of each\nnumber in reading order:").toUpperCase().replace(" ", "");
+			v = valid(numpad);
 		}
 		int[] path = new int[3];
 		int[] nums = new int[4];
@@ -93,7 +87,7 @@ public class NumberPad
 		else
 			nums[3] = level4[path[0]][path[1]][path[2]][1];
 		
-		System.out.println(nums[0] + "" + nums[1] + "" + nums[2] + "" + nums[3]);
+		//System.out.println(nums[0] + "" + nums[1] + "" + nums[2] + "" + nums[3]);
 		
 		if(ew.getSNDIG(ew.numSNDIGS() - 1) % 2 == 0)
 		{
@@ -130,9 +124,9 @@ public class NumberPad
 		}
 		return sum;
 	}
-	private boolean valid(String i, int l)
+	private boolean valid(String i)
 	{
-		if(i.length() == l)
+		if(i.length() == 10)
 		{
 			for(int aa = 0; aa < i.length(); aa++)
 			{

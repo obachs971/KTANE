@@ -46,7 +46,7 @@ public class Tester
 		int num = 0;
 		while(num == 0)
 		{
-		    ForeignExchangeRates test = new ForeignExchangeRates(e);
+		    OnlyConnect test = new OnlyConnect(e, resizer);
 			test.run();
 			
 
