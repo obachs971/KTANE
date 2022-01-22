@@ -40,13 +40,14 @@ public class Tester
 		System.out.print((r.nextInt(4) + 1));
 		System.out.println((r.nextInt(3) + 1));
 		
+
 		//BombConfig con = new BombConfig();
 		BombEdgework e = new BombEdgework(resizer);
 		
 		int num = 0;
 		while(num == 0)
 		{
-		    OnlyConnect test = new OnlyConnect(e, resizer);
+		    Gamepad test = new Gamepad(e);
 			test.run();
 			
 

@@ -28,54 +28,54 @@ public class Gamepad
 		int x = Integer.parseInt(input.substring(0, 2)), y = Integer.parseInt(input.substring(2)), a = x / 10, b = x % 10, c = y / 10, d = y % 10;
 		//Getting the first subcommand
 		if(prime(x))
-			command = "UUDD";
+			command = "▲▲▼▼";
 		else if(x % 12 == 0)
-			command = "UALL";
+			command = "▲A◀◀";
 		else if((a + b) == 10 && ew.getSNDIG(ew.numSNDIGS() - 1) % 2 == 1)
-			command = "ABLR";
+			command = "AB◀▶";
 		else if((x - 3) % 6 == 0 || (x - 5) % 10 == 0)
-			command = "DLAR";
+			command = "▼◀A▶";
 		else if(x % 7 == 0 && y % 7 != 0)
-			command = "LLUB";
+			command = "◀◀▲B";
 		else if(x == (c * d))
-			command = "AULL";
+			command = "A▲◀◀";
 		else if(square(x))
-			command = "RRAD";
+			command = "▶▶A▼";
 		else if((x + 1) % 3 == 0 || ew.findUnlit("SND"))
-			command = "RABU";
+			command = "▶AB▲";
 		else if(60 <= x && x < 90 && ew.BAT() == 0)
-			command = "BBRL";
+			command = "BB▶◀";
 		else if(x % 6 == 0)
-			command = "ABAR";
+			command = "ABA▶";
 		else if(x % 4 == 0)
-			command = "DDLU";
+			command = "▼▼◀▲";
 		else
-			command = "ALBR";
+			command = "A◀B▶";
 		//Getting the second subcommand
 		if(prime(y))
-			command = command + "LRLR";
+			command = command + "◀▶◀▶";
 		else if(y % 8 == 0)
-			command = command + "DRBU";
+			command = command + "▼▶B▲";
 		else if((c - d) == 4 && ew.findPort("RCA") > 0)
-			command = command + "RADD";
+			command = command + "▶A▼▼";
 		else if((y - 2) % 4 == 0 || ew.findLit("FRQ"))
-			command = command + "BURA";
+			command = command + "B▲▶A";
 		else if(y % 7 == 0 && x % 7 != 0)
-			command = command + "LLDA";
+			command = command + "◀◀▼A";
 		else if(square(y))
-			command = command + "UDBR";
+			command = command + "▲▼B▶";
 		else if((a * b) == y)
-			command = command + "AULD";
+			command = command + "A▲◀▼";
 		else if((y + 1) % 4 == 0 || ew.findPort("PS/2") > 0)
-			command = command + "UBBB";
+			command = command + "▲BBB";
 		else if(c > d && ew.BAT() >= 2)
-			command = command + "AAUD";
+			command = command + "AA▲▼";
 		else if(y % 5 == 0)
-			command = command + "BABL";
+			command = command + "BAB◀";
 		else if(y % 3 == 0)
-			command = command + "RUUL";
+			command = command + "▶▲▲◀";
 		else
-			command = command + "BUAD";
+			command = command + "B▲A▼";
 		//Global Overrides
 		if(x % 11 == 0)
 			command = command.charAt(1) + "" + command.charAt(0) + "" + command.substring(2, 4) + "" + command.charAt(6) + "" + command.charAt(5) + "" + command.charAt(4) + "" + command.charAt(7);
