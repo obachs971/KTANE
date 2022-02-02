@@ -45,32 +45,46 @@ public class ThirdBase
 	public String run()
 	{
 		ArrayList<String> displayed = new ArrayList<String>();
+		int flip = JOptionPane.showConfirmDialog(null, "Are you flipping the module?");
 		if(pt == 1)
 		{
 			for(int zz = 0; zz < 3; zz++)
 			{
 				String display = JOptionPane.showInputDialog("Enter the word\nin the display:").toUpperCase();
+				if(flip == 1)
+					display = flip(display);
 				int pos = getPosition(display);
 				while(pos == -1)
 				{
 					JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
 					display = JOptionPane.showInputDialog("Enter the word\nin the display:").toUpperCase();
+					if(flip == 1)
+						display = flip(display);
 					pos = getPosition(display);
 				}
+				if(flip == 1)
+					pos = 5 - pos;
 				displayed.add(display.toUpperCase());
 				String[] order = {"TL", "TR", "ML", "MR", "BL", "BR"};
 				String word = JOptionPane.showInputDialog("Enter the word\non the " + order[pos] + " button:").toUpperCase();
+				if(flip == 1)
+					word = flip(word);
 				int row = getRow(word);
 				while(row == -1)
 				{
 					JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
 					word = JOptionPane.showInputDialog("Enter the word\non the " + order[pos] + " button:").toUpperCase();
+					if(flip == 1)
+						word = flip(word);
 					row = getRow(word);
 				}
 				String out = "";
 				for(int aa = 0; aa < table[row].length; aa++)
 				{
-					out = out + "" + table[row][aa] + ", ";
+					if(flip == 1)
+						out = out + "" + flip(table[row][aa]) + ", ";
+					else
+						out = out + "" + table[row][aa] + ", ";
 					if((aa + 1) % 4 == 0)
 						out = out + "\n";
 				}
@@ -82,24 +96,34 @@ public class ThirdBase
 			for(int zz = 0; zz < 3; zz++)
 			{
 				String display = JOptionPane.showInputDialog("Enter the word\nin the display:").toUpperCase();
+				if(flip == 1)
+					display = flip(display);
 				int pos = getPosition(display);
 				while(pos == -1)
 				{
 					JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
 					display = JOptionPane.showInputDialog("Enter the word\nin the display:").toUpperCase();
+					if(flip == 1)
+						display = flip(display);
 					pos = getPosition(display);
 				}
+				if(flip == 1)
+					pos = 5 - pos;
 				displayed.add(display.toUpperCase());
 				ArrayList<String> buttons = new ArrayList<String>();
 				String[] order = {"TL", "TR", "ML", "MR", "BL", "BR"};
 				for(int aa = 0; aa < 6; aa++)
 				{
 					String input = JOptionPane.showInputDialog("Enter the\n" + order[aa] + " button:").toUpperCase();
+					if(flip == 1)
+						input = flip(input);
 					boolean v = (getRow(input) > -1 && !(buttons.contains(input)));
 					while(!(v))
 					{
 						JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
 						input = JOptionPane.showInputDialog("Enter the\n" + order[aa] + " button:").toUpperCase();
+						if(flip == 1)
+							input = flip(input);
 						v = (getRow(input) > -1 && !(buttons.contains(input)));
 					}
 					buttons.add(input.toUpperCase());
@@ -109,7 +133,10 @@ public class ThirdBase
 				{
 					if(buttons.contains(table[row][aa]))
 					{
-						JOptionPane.showMessageDialog(null, "Press this button: " + table[row][aa]);
+						if(flip == 1)
+							JOptionPane.showMessageDialog(null, "Press this button: " + flip(table[row][aa]));
+						else
+							JOptionPane.showMessageDialog(null, "Press this button: " + table[row][aa]);
 						break;
 					}
 				}
@@ -167,5 +194,15 @@ public class ThirdBase
 				return aa;
 		}
 		return -1;
+	}
+	private String flip(String word)
+	{
+		word = word.replace("6", "*");
+		word = word.replace("9", "6");
+		word = word.replace("*", "9");
+		String flip = "";
+		for(char c : word.toCharArray())
+			flip = c + "" + flip;
+		return flip;
 	}
 }

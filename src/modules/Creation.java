@@ -102,15 +102,22 @@ public class Creation
 		String souv = "DAY 1: " + weatherName[weather];
 		if(permutation > 0)
 		{
-			String input = JOptionPane.showInputDialog("TL, TR, BL, BR\nEnter the position of\nthe " + elementName[permutation - 1] + " element:").toUpperCase();
-			int col = getCol(input);
-			while(col < 0)
+			JFrame framePos = new JFrame();
+			JOptionPane optionPanePos = new JOptionPane();
+			JButton[] jButtonPos = new JButton[4];
+			optionPanePos.setLayout(new GridLayout(2, 2));
+			optionPanePos.setOptions(new Object[] {});
+			optionPanePos.removeAll();
+			String[] positions = {"Top-Left", "Top-Right", "Bottom-Left", "Bottom-Right"};
+			for(int i = 0; i < 4; i++)
 			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("TL, TR, BL, BR\nEnter the position of\nthe " + elementName[permutation - 1] + " element:").toUpperCase();
-				col = getCol(input);
+				jButtonPos[i] = getButton(optionPanePos, positions[i]);
+				optionPanePos.add(jButtonPos[i]);
 			}
-			permutation = table1[permutation - 1][col];
+			JDialog dialogPos = optionPanePos.createDialog(framePos, "");
+			dialogPos.setTitle("Select the position of the " + elementName[weather - 1] + " element");
+			dialogPos.setVisible(true);
+			permutation = table1[permutation - 1][getCol(optionPanePos.getValue().toString())];
 		}
 		String[][][] order;
 		if(ew.BH() >= 3)
@@ -182,13 +189,13 @@ public class Creation
 	{
 		switch(i)
 		{
-			case "TL":
+			case "Top-Left":
 				return 0;
-			case "TR":
+			case "Top-Right":
 				return 1;
-			case "BL":
+			case "Bottom-Left":
 				return 2;
-			case "BR":
+			case "Bottom-Right":
 				return 3;
 		}
 		return -1;
@@ -196,6 +203,17 @@ public class Creation
 	private JButton getButton(final JOptionPane optionPane, String value, ImageIcon icon ) {
 	    final JButton button = new JButton();
 	    button.setIcon(icon);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(value);
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
+	private JButton getButton(final JOptionPane optionPane, String value ) {
+	    final JButton button = new JButton();
+	    button.setText(value);
 	    ActionListener actionListener = new ActionListener() {
 	      public void actionPerformed(ActionEvent actionEvent) {
 	        optionPane.setValue(value);

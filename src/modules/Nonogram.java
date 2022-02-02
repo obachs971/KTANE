@@ -37,12 +37,12 @@ public class Nonogram
 		}
 		displaySolution(grid);
 	}
-	private void printGrid(String[] grid)
+	/*private void printGrid(String[] grid)
 	{
 		for(int aa = 0; aa < 5; aa++)
 			System.out.println(grid[aa]);
 		System.out.println("----------");
-	}
+	}*/
 	private String[] solveGrid(String[] clues)
 	{
 		String[] grid = new String[]{"NNNNN", "NNNNN", "NNNNN", "NNNNN", "NNNNN"};
@@ -53,7 +53,7 @@ public class Nonogram
 			for(int aa = 0; aa < 5; aa++)
 			{
 				grid[aa] = fill(grid[aa], clues[aa + 5]);
-				printGrid(grid);
+				//printGrid(grid);
 				if(grid[aa].equals("ERROR"))
 					return null;
 			}
@@ -64,7 +64,7 @@ public class Nonogram
 				for(int bb = 0; bb < 5; bb++)
 					grid[bb] = grid[bb].substring(0, aa) + "" + temp.charAt(bb) + "" + grid[bb].substring(aa + 1);
 				System.out.println(clues[aa]);
-				printGrid(grid);
+				//printGrid(grid);
 				if(temp.equals("ERROR"))
 					return null;
 			}

@@ -1,7 +1,13 @@
 package modules;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class WebDesign 
@@ -25,52 +31,53 @@ public class WebDesign
 			target = getTarget(input);
 		}
 		int lines = 0, score = 0, pos = 2;
+		String[] names = {"Background", "Background-Color", "Border", "Border-Radius", "Border-Left", "Border-Right", "Border-Bottom", "Box-Shadow", "Color", "Font-Family", "Margin", "Padding", "Position", "Text-Shadow", "Z-Index", "DONE"};
+		String[] vals = {"BGC", "BGC", "B", "B", "B", "B", "B", "S", "BGC", "FF", "MAR", "MAR", "POS", "S", "Z", ""};
+		JFrame frame = new JFrame();
+		JOptionPane optionPane = new JOptionPane();
+		JButton[] jButton = new JButton[names.length];
+		optionPane.setLayout(new GridLayout(names.length / 2, 2));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		for(int i = 0; i < names.length; i++)
+		{
+			jButton[i] = getButton(optionPane, names[i], vals[i]);
+			optionPane.add(jButton[i]);
+		}
 		while(true)
 		{
-			input = JOptionPane.showInputDialog("B, BR, BL, BB - Border Stuff\nBS - Box Shadow\nF - Font \nPos - Position\nTS - Text Shadow\nZI - Z Index\nColor, Background, Margin, Padding\nEnter line #" + (lines + 1) + ": ").toUpperCase();
-			boolean v = valid(input);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("B, BR, BL, BB - Border Stuff\nBS - Box Shadow\nFF - Font Family\nPos - Position\nTS - Text Shadow\nZI - Z Index\nBG, BGC - Background\nColor, Margin, Padding\nEnter line #" + (lines + 1) + ": ").toUpperCase();
-				v = valid(input);
-			}
+			JDialog dialog = optionPane.createDialog(frame, "");
+			dialog.setTitle("Select the code for line #" + (lines + 1));
+			dialog.setVisible(true);
+			input = optionPane.getValue().toString();
 			if(input.length() == 0)
 				break;
 			lines++;
 			switch(input) 
 			{
-				case "MARGIN":
-				case "PADDING":
+				case "MAR":
 					score+=2;
 					break;
-				case "BORDER":
 				case "B":
-				case "BR":
-				case "BL":
-				case "BB":
 					if(JOptionPane.showConfirmDialog(null, "Is the border 0px or 50%?") == 1)
 						score++;
 					break;
-				case "ZI":
+				case "Z":
 					if(pos == 2)
 						pos = JOptionPane.showConfirmDialog(null, "Is there a position?");
 					if(pos == 1)
 						score--;
 					break;
-				case "F":
-				case "FONT":
+				case "FF":
 					if(JOptionPane.showConfirmDialog(null, "Is it in Comic Sans MS?") == 0)
 						score-=5;
 					else
 						score++;
 					break;
-				case "BS":
-				case "TS":
+				case "S":
 					if(JOptionPane.showConfirmDialog(null, "Is it set to none?") == 1)
 						score+=2;
 				case "POS":
-				case "POSITION":
 					pos = 0;
 					break;
 			}
@@ -207,32 +214,15 @@ public class WebDesign
 		}
 		return null;
 	}
-	private boolean valid(String i)
-	{
-		switch(i)
-		{
-			case "":
-			case "MARGIN":
-			case "PADDING":
-			case "BORDER":
-			case "B":
-			case "BR":
-			case "BL":
-			case "BB":
-			case "ZI":
-			case "FONT":
-			case "F":
-			case "BS":
-			case "TS":
-			case "POS":
-			case "POSITION":
-			case "COLOR":
-			case "BACKGROUND":
-			case "BG":
-			case "BGC":
-				return true;
-			default:
-				return false;
-		}
-	}
+	private JButton getButton(final JOptionPane optionPane, String name, String val ) {
+	    final JButton button = new JButton();
+	    button.setText(name);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(val);
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
 }

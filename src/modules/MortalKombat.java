@@ -16,13 +16,13 @@ public class MortalKombat
 {
 	private final String[][] moveTables =
 		{
-				{"L R A", "L R B", "D D C", "D D L C U B", "L L L B B U", "D L U D A B"},
-				{"U D C", "R R B", "D L A", "A D B U L C", "U U R R C B", "A B C L L U"},
-				{"R R C", "R U A", "L D B", "D R B L B D", "R R D A U C", "R R L L U A"},
-				{"L L B", "D R A", "D U C", "A A L U R B", "D U D U B B", "C U L A B D"},
-				{"L L A", "L R C", "U U B", "R R R B B B", "U U D L A C", "A R B D C D"},
-				{"U R A", "D L C", "R L B", "R L L R C B", "D U R B L A", "U U D L A C"},
-				{"R U B", "R R A", "R D C", "L U R D C C", "R D L U A A", "U R A L U B"}
+				{"L R A", "L R B", "D D C", "D D L C U B", "L L L B B U", "D L U D A B", "132", "213", "321", "231", "123", "312"},
+				{"U D C", "R R B", "D L A", "A D B U L C", "U U R R C B", "A B C L L U", "", "", "", "", "", ""},
+				{"R R C", "R U A", "L D B", "D R B L B D", "R R D A U C", "R R L L U A", "", "", "", "", "", ""},
+				{"L L B", "D R A", "D U C", "A A L U R B", "D U D U B B", "C U L A B D", "", "", "", "", "", ""},
+				{"L L A", "L R C", "U U B", "R R R B B B", "U U D L A C", "A R B D C D", "", "", "", "", "", ""},
+				{"U R A", "D L C", "R L B", "R L L R C B", "D U R B L A", "U U D L A C", "", "", "", "", "", ""},
+				{"R U B", "R R A", "R D C", "L U R D C C", "R D L U A A", "U R A L U B", "", "", "", "", "", ""}
 		};
 	private final double r;
 	public MortalKombat(double resizer)
@@ -59,8 +59,9 @@ public class MortalKombat
 		JDialog dialog = optionPane.createDialog(frame, "");
 		dialog.setTitle("Select the left character:");
 		dialog.setVisible(true);
-		String playing = (String)optionPane.getValue();
-		characters.remove(playing);
+		String input = optionPane.getValue().toString();
+		int playing = characters.indexOf(input);
+		characters.remove(input);
 		optionPane.setLayout(new GridLayout(3, 2));
 		optionPane.removeAll();
 		//JButton[] temp = new JButton[jButton.length - 1];
@@ -78,6 +79,9 @@ public class MortalKombat
 		dialog = optionPane.createDialog(frame, "");
 		dialog.setTitle("Select the right character:");
 		dialog.setVisible(true);
+		input = optionPane.getValue().toString();
+		int oppose = characters.indexOf(input);
+		
 	}
 	private JButton getButton(final JOptionPane optionPane, String name, ImageIcon icon ) {
 	    final JButton button = new JButton();

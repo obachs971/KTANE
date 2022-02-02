@@ -47,7 +47,7 @@ public class Tester
 		int num = 0;
 		while(num == 0)
 		{
-		    Gamepad test = new Gamepad(e);
+		    Battleship test = new Battleship(resizer, e);
 			test.run();
 			
 

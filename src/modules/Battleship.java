@@ -1,7 +1,12 @@
 package modules;
 
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import start.BombEdgework;
@@ -9,8 +14,10 @@ import start.BombEdgework;
 public class Battleship 
 {
 	private final BombEdgework ew;
-	public Battleship(BombEdgework e)
+	private final double r;
+	public Battleship(double resizer, BombEdgework e)
 	{
+		r = resizer;
 		ew = e;
 	}
 	public void run()
@@ -108,24 +115,7 @@ public class Battleship
 			run();
 		}
 		else
-		{
-			String out = "Torpedo these spots:";
-			for(int aa = 0; aa < 5; aa++)
-			{
-				out = out + "\nRow #" + (aa + 1) + ": ";
-				String tempout = "";
-				for(int bb = 0; bb < 5; bb++)
-				{
-					if(board[aa][bb] == 'S')
-						tempout = tempout + "" + (bb + 1) + " ";
-				}
-				if(tempout.length() == 0)
-					out = out + "SKIP";
-				else
-					out = out + "" + tempout.toUpperCase();
-			}
-			JOptionPane.showMessageDialog(null, out);
-		}
+			displaySolution(board);
 	}
 	//Returns the solution of the puzzle
 	private char[][] getSolution(char[][] board, int[][] numbers, int[] ships)
@@ -394,6 +384,36 @@ public class Battleship
 			return true;
 		}
 		return false;
+	}
+	private void displaySolution(char[][] grid)
+	{
+		ImageIcon[][] solution = new ImageIcon[grid.length][];
+		JLabel[][] solutionLabel = new JLabel[grid.length][];
+		JFrame solutionFrame = new JFrame();
+		solutionFrame.setLayout(new GridLayout(grid.length, grid[0].length));
+		String out = "Torpedo these spots:";
+		for(int aa = 0; aa < grid.length; aa++)
+		{
+			out = out + "\nROW #" + (aa + 1) + ": ";
+			solution[aa] = new ImageIcon[grid[aa].length];
+			solutionLabel[aa] = new JLabel[grid[aa].length];
+			for(int bb = 0; bb < grid[aa].length; bb++)
+			{
+				solution[aa][bb] = new ImageIcon("img/Battleship" + grid[aa][bb] + ".jpg");
+				Image image = solution[aa][bb].getImage();
+				image = image.getScaledInstance((int)(solution[aa][bb].getIconWidth() / r), (int)(solution[aa][bb].getIconHeight() / r), java.awt.Image.SCALE_SMOOTH);
+				solution[aa][bb] = new ImageIcon(image);
+				solutionLabel[aa][bb] = new JLabel();
+				solutionLabel[aa][bb].setIcon(solution[aa][bb]);
+				solutionFrame.add(solutionLabel[aa][bb]);
+				if(grid[aa][bb] == 'S')
+					out = out + "" + (bb + 1) + " ";
+			}
+		}
+		solutionFrame.pack();
+		solutionFrame.setVisible(true);
+		JOptionPane.showMessageDialog(null, out);
+		solutionFrame.setVisible(false);
 	}
 	/*private void print(char[][] board)
 	{
