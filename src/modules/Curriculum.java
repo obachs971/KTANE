@@ -2,13 +2,14 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class Curriculum 
 {
-	private final int playType;
+	private final PlayType playType;
 	private final BombEdgework ew;
-	public Curriculum(int pt, BombEdgework e)
+	public Curriculum(PlayType pt, BombEdgework e)
 	{
 		playType = pt;
 		ew = e;
@@ -17,7 +18,7 @@ public class Curriculum
 	{
 		String effect = getEffect();
 		String[] classes = getClasses();
-		if(playType == 2)
+		if(playType == PlayType.TP)
 		{
 			String[] schedule = getSchedule();
 			while(schedule == null)

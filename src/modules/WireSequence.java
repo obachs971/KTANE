@@ -2,10 +2,12 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class WireSequence 
 {
-	private final int playType;
-	public WireSequence(int pt)
+	private final PlayType playType;
+	public WireSequence(PlayType pt)
 	{
 		playType = pt;
 	}
@@ -18,7 +20,7 @@ public class WireSequence
 					{"ABC", "AC", "B", "AC", "B", "BC", "AB", "C", "C"}
 			};
 		int[] rbk = {0, 0, 0};
-		if(playType == 1)
+		if(playType == PlayType.Team)
 		{
 			int counter = 1;
 			while(true)

@@ -2,17 +2,19 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class ColourFlash 
 {
-	private final int playType;
-	public ColourFlash(int pt)
+	private final PlayType playType;
+	public ColourFlash(PlayType pt)
 	{
 		playType = pt;
 	}
 	public String run()
 	{
 		String souv;
-		if(playType == 1)
+		if(playType == PlayType.Team)
 		{
 			String lastColor = JOptionPane.showInputDialog("Red, Blue, Yellow,\nGreen, White, Magenta\nEnter the last COLOR\nof the sequence:").toUpperCase();
 			boolean v = v2(lastColor);

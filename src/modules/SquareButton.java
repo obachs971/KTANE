@@ -2,13 +2,14 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class SquareButton 
 {
 	private final BombEdgework ew;
-	private final int pt;
-	public SquareButton(BombEdgework e, int p)
+	private final PlayType pt;
+	public SquareButton(BombEdgework e, PlayType p)
 	{
 		ew = e;
 		pt = p;
@@ -48,7 +49,7 @@ public class SquareButton
 	}
 	private void hold()
 	{
-		if(pt == 0)
+		if(pt == PlayType.EFM)
 		{
 			String input = JOptionPane.showInputDialog("Enter the remaining minutes:");
 			boolean v = v3(input);

@@ -2,17 +2,19 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class LEDEncryption 
 {
-	private final int pt;
-	public LEDEncryption(int p)
+	private final PlayType pt;
+	public LEDEncryption(PlayType p)
 	{
 		pt = p;
 	}
 	public String run()
 	{
 		String souv = "";
-		if(pt == 1)
+		if(pt == PlayType.Team)
 		{
 			for(int aa = 0; aa < 5; aa++)
 			{

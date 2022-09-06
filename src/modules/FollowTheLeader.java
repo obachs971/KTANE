@@ -4,20 +4,21 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class FollowTheLeader 
 {
 	private final BombEdgework ew;
-	private final int playType;
-	public FollowTheLeader(BombEdgework e, int pt)
+	private final PlayType playType;
+	public FollowTheLeader(BombEdgework e, PlayType pt)
 	{
 		ew = e;
 		playType = pt;
 	}
 	public void run()
 	{
-		if(playType == 1)//Team play type
+		if(playType == PlayType.Team)//Team play type
 		{
 			String[] ruleList = {
 				"The previous wire is NOT\nYellow, Blue, or Green",

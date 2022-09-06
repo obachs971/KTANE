@@ -13,6 +13,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class Poetry 
 {
 	private int index;
@@ -23,10 +25,10 @@ public class Poetry
 				{"SEARCH","PATIENCE","FAILURE","FOCUS","CREATION","SOLITARY","GAZE","FUTURE","COMPASSION","BLACK","PAST","MORALITY","ROMANCE","COOKIES","IDENTITY","WORDS","WEIGHTLESS","LOVELY","HOLLOW","REFLECTION","WEATHER","DANCE","BUNNY","FATIGUE","OCEAN","HEART","RELAX","FLOW","SUNSHINE","CROWD","CLARITY","ENERGY"},
 				{"CLARITY","ENERGY","FLOW","SUNSHINE","CROWD","FATIGUE","OCEAN","HEART","RELAX","HOLLOW","REFLECTION","WEATHER","DANCE","BUNNY","IDENTITY","WORDS","WEIGHTLESS","LOVELY","BLACK","PAST","MORALITY","ROMANCE","COOKIES","SOLITARY","GAZE","FUTURE","COMPASSION","FAILURE","FOCUS","CREATION","SEARCH","PATIENCE"}
 		};
-	private final int playType;
+	private final PlayType playType;
 	private final double r;
 	private final boolean isSouv;
-	public Poetry(boolean s, int pt, double resizer)
+	public Poetry(boolean s, PlayType pt, double resizer)
 	{
 		isSouv = s;
 		playType = pt;
@@ -55,7 +57,7 @@ public class Poetry
 		JDialog dialog = optionPane.createDialog(frame, "");
 		dialog.setTitle("Select the poet:");
 		dialog.setVisible(true);
-		if(playType == 1)
+		if(playType == PlayType.Team)
 		{
 			int[] next = {2, 3, 4, 5, 4, 5, 4};
 			int cur = 0;

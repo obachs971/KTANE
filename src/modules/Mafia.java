@@ -1,8 +1,14 @@
 package modules;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import start.BombConfig;
@@ -18,6 +24,7 @@ public class Mafia
 				"GARY","TED","KIM","NATE","CHER","RON","THOMAS","SAM","DUKE","JACK",
 				"ED","RONNY","TERRY","CLAIRA","NICK","COB","ASH","DON","JERRY","SIMON"
 		};
+	private String sub;
 	private final BombConfig cf;
 	private final BombEdgework ew;
 	public Mafia(BombConfig c, BombEdgework e)
@@ -30,19 +37,19 @@ public class Mafia
 		ArrayList<String> people = new ArrayList<String>();
 		ArrayList<String> peopleList = new ArrayList<String>();
 		ArrayList<String> eliminated = new ArrayList<String>();
+		ArrayList<String> orderList = new ArrayList<String>();
+		for(String p : order)
+			orderList.add(p.toUpperCase());
+		Collections.sort(orderList);
 		String[] pos = {"TL", "TR", "RT", "RB", "BR", "BL", "LB", "LT"};
 		for(int aa = 0; aa < 8; aa++)
 		{
-			String input = JOptionPane.showInputDialog("Enter the " + pos[aa] + " person:").toUpperCase();
-			boolean v = v1(input, people);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Enter the " + pos[aa] + " person:").toUpperCase();
-				v = v1(input, people);
-			}
-			people.add(input.toUpperCase());
-			peopleList.add(input.toUpperCase());
+			JDialog dialog = getDialog(orderList);
+			dialog.setTitle("Select the " + pos[aa] + " person:");
+			dialog.setVisible(true);
+			people.add(sub.toUpperCase());
+			peopleList.add(sub.toUpperCase());
+			orderList.remove(sub);
 		}
 		int cur = ew.getSNSUM();
 		for(int aa = 0; aa < ew.numSNLETS(); aa++)
@@ -350,15 +357,6 @@ public class Mafia
 			num--;
 		return pl.get(num);
 	}
-	private boolean v1(String i, ArrayList<String> p)
-	{
-		for(int aa = 0; aa < order.length; aa++)
-		{
-			if(order[aa].equals(i))
-				return !(p.contains(i));
-		}
-		return false;
-	}
 	private int mod(int n, int m)
 	{
 		while(n < 0)
@@ -374,4 +372,34 @@ public class Mafia
 		}
 		return 0;
 	}
+	private JDialog getDialog(ArrayList<String> arr)
+	{
+		JFrame frame = new JFrame();
+		JOptionPane optionPane = new JOptionPane();
+		JButton[] jButton = new JButton[arr.size()];
+		if(arr.size() % 5 == 0)
+			optionPane.setLayout(new GridLayout(arr.size() / 5, 5));
+		else
+			optionPane.setLayout(new GridLayout((arr.size() / 5 + 1), 5));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		for(int aa = 0; aa < arr.size(); aa++)
+		{
+			jButton[aa] = getButton(optionPane, arr.get(aa));
+			optionPane.add(jButton[aa]);
+		}
+		return optionPane.createDialog(frame, "");
+	}
+	private JButton getButton(final JOptionPane optionPane, String text) {
+	    final JButton button = new JButton();
+	    button.setText(text);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(text.toUpperCase());
+	        sub = text.toUpperCase();
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
 }

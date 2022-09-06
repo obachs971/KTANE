@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombConfig;
 import start.BombEdgework;
 
@@ -16,9 +17,9 @@ public class GameOfLifeCruel
 {
 	private final BombConfig con;
 	private final BombEdgework ew;
-	private int playType;
+	private PlayType playType;
 	private final double r;
-	public GameOfLifeCruel(BombConfig cf, BombEdgework e, int pt, double resizer)
+	public GameOfLifeCruel(BombConfig cf, BombEdgework e, PlayType pt, double resizer)
 	{
 		con = cf;
 		ew = e;
@@ -52,7 +53,7 @@ public class GameOfLifeCruel
 			halfTime = min + ":0" + sec;
 		else
 			halfTime = min + ":" + sec;
-		if(playType == 1)
+		if(playType == PlayType.Team)
 		{
 			int count = 1;
 			while(true)

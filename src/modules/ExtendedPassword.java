@@ -2,6 +2,8 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class ExtendedPassword 
 {
 	private final String[] wordList =
@@ -16,14 +18,14 @@ public class ExtendedPassword
 			"VICTOR", "VIOLET", "WITHER", "WRENCH", "XENONS", "XYLOSE", 
 			"YELLOW", "YOGURT", "ZENITH", "ZODIAC"
 		};
-	private final int playType;
-	public ExtendedPassword(int pt)
+	private final PlayType playType;
+	public ExtendedPassword(PlayType pt)
 	{
 		playType = pt;
 	}
 	public void run()
 	{
-		if(playType == 1)
+		if(playType == PlayType.Team)
 		{
 			String input = JOptionPane.showInputDialog("Enter the 1st letter:").toUpperCase();
 			boolean v = v1(input);

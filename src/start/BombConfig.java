@@ -18,10 +18,11 @@ public class BombConfig
 	private final int day;
 	private final String dayName;
 	
-	public BombConfig()
+	public BombConfig(int convertTimeZone)
 	{
 		//Bomb Date
 		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.HOUR_OF_DAY, convertTimeZone);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String conv = sdf.format(cal.getTime());
         String[] split = conv.split(":");
@@ -31,16 +32,21 @@ public class BombConfig
         
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");  
         LocalDateTime now = LocalDateTime.now();  
+        now.plusHours(convertTimeZone);
         conv = dtf.format(now);  
         split = conv.split("/");
         month = Integer.parseInt(split[1]);
         day = Integer.parseInt(split[2]);
         
-        long num = System.currentTimeMillis();
-		Date now2 = new Date(num); 
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.add(Calendar.HOUR_OF_DAY, convertTimeZone);
+        long num = cal.getTimeInMillis();
+		Date now2 = new Date(num);
 	    SimpleDateFormat simpleDateformat = new SimpleDateFormat("EEEE"); // the day of the week spelled out completely
 	    dayName = simpleDateformat.format(now2).toUpperCase();
 		
+	    
+	    
 		//Bomb Time
 		String input = JOptionPane.showInputDialog("Enter the starting time:");
 		boolean v = v1(input);
@@ -81,6 +87,14 @@ public class BombConfig
 	public int getNumberNeedies()
 	{
 		return needies;
+	}
+	public int getNumberSolvable()
+	{
+		return (modules - needies);
+	}
+	public int getNumberUnsolved(int solved)
+	{
+		return (getNumberSolvable() - solved);
 	}
 	public int getStartingMonth()
 	{

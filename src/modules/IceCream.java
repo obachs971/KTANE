@@ -1,5 +1,12 @@
 package modules;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import start.BombEdgework;
@@ -29,6 +36,14 @@ public class IceCream
 				{"562", "136", "347", "205", "813"},
 				{"568", "210", "482", "425", "051"}
 		};
+	private String[] nameList = 
+		{
+				"Adam","Ashley","Bob","Cheryl","Dave",
+				"Gary","George","Jacob","Jade","Jessica",
+				"Mike","Pat","Sally","Sam","Sean",
+				"Simon","Taylor","Tim","Tom","Victor"
+		};
+	private String sub;
 	private final BombEdgework ew;
 	public IceCream(BombEdgework e)
 	{
@@ -38,40 +53,38 @@ public class IceCream
 	{
 		String[] order;
 		if(ew.numLit() > ew.numUnlit())
-			order = new String[] {"CC", "N", "TF", "TC", "RO", "DC", "MCC", "DS", "RA"};
+			order = new String[] {"Cookies and Cream", "Neapolitan", "Tutti Frutti", "The Classic", "Rocky Road", "Double Chocolate", "Mint Chocolate Chip", "Double Strawberry", "Raspberry Ripple"};
 		else if(ew.numEmpty() > 0)
-			order = new String[] {"DC", "MCC", "N", "RO", "TF", "DS", "CC", "RA", "TC"};
+			order = new String[] {"Double Chocolate", "Mint Chocolate Chip", "Neapolitan", "Rocky Road", "Tutti Frutti", "Double Strawberry", "Cookies and Cream", "Raspberry Ripple", "The Classic"};
 		else if(ew.BAT() >= 3)
-			order = new String[] {"N", "TF", "CC", "RA", "DS", "MCC", "DC", "TC", "RO"};
+			order = new String[] {"Neapolitan", "Tutti Frutti", "Cookies and Cream", "Raspberry Ripple", "Double Strawberry", "Mint Chocolate Chip", "Double Chocolate", "The Classic", "Rocky Road"};
 		else
-			order = new String[] {"DS", "CC", "RO", "TC", "N", "DC", "TF", "RA", "MCC"};
+			order = new String[] {"Double Strawberry", "Cookies and Cream", "Rocky Road", "The Classic", "Neapolitan", "Double Chocolate", "Tutti Frutti", "Raspberry Ripple", "Mint Chocolate Chip"};
 		String souv = "";
 		for(int aa = 0; aa < 3; aa++)
 		{
-			String input = JOptionPane.showInputDialog("Enter the name:").toUpperCase();
-			int row = getRow(input);
-			while(row == -1)
+			
+			JDialog dialog = getDialog(nameList, 2);
+			dialog.setTitle("Select the Name:");
+			dialog.setVisible(true);
+			int row = getRow(sub);
+			souv = souv + "NAME: " + sub.toUpperCase();
+			String allergy = table[row][ew.getSNDIG(ew.numSNDIGS() - 1) / 2];
+			String[] flavorList = {"The Classic", "Cookies and Cream", "Double Chocolate", "Double Strawberry", "Mint Chocolate Chip", "Neapolitan", "Raspberry Ripple", "Rocky Road", "Tutti Frutti"};
+			String[] options = new String[4];
+			for(int bb = 0; bb < 4; bb++)
 			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Enter the name:").toUpperCase();
-				row = getRow(input);
+				dialog = getDialog(flavorList, 2);
+				dialog.setTitle("Select Non-Vanilla Flavor #" + (bb + 1) + ":");
+				dialog.setVisible(true);
+				options[bb] = sub.toUpperCase();
+				flavorList = remove(flavorList, sub);
 			}
-			souv = souv + "NAME: " + input.toUpperCase();
-			String allergy = table[row][ew.getSNDIG(ew.numSNDIGS()) / 2];
-			input = JOptionPane.showInputDialog("TF - Tutti Frutti\nRO - Rocky Road\nRA - Raspberry Ripple\nDC - Double Chocolate\nDS - Double Strawberry\nCC - Cookies & Cream\nN - Neapolitan\nMCC - Mint Chocolate Chip\nTC - The Classic\nIgnore Vanilla as a flavor\nEnter the 4 flavors (spaces):").toUpperCase();
-			boolean v = valid(input);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("TF - Tutti Frutti\nRO - Rocky Road\nRA - Raspberry Ripple\nDC - Double Chocolate\nDS - Double Strawberry\nCC - Cookies & Cream\nN - Neapolitan\nMCC - Mint Chocolate Chip\nTC - The Classic\nIgnore Vanilla as a flavor\nEnter the 4 flavors (spaces):").toUpperCase();
-				v = valid(input);
-			}
-			String[] options = input.split(" ");
 			String sell = "Vanilla";
 			String ignore = "";
 			for(int bb = 0; bb < order.length; bb++)
 			{
-				if(order[bb].equals(options[0]) || order[bb].equals(options[1]) || order[bb].equals(options[2]) || order[bb].equals(options[3]))
+				if(order[bb].equalsIgnoreCase(options[0]) || order[bb].equalsIgnoreCase(options[1]) || order[bb].equalsIgnoreCase(options[2])|| order[bb].equalsIgnoreCase(options[3]))
 				{
 					String FA = getFlavorAllergy(order[bb]);
 					boolean flag = true;
@@ -85,7 +98,7 @@ public class IceCream
 					}
 					if(flag)
 					{
-						sell = getFlavor(order[bb]);
+						sell = order[bb];
 						ignore = order[bb].toUpperCase();
 						break;
 					}
@@ -95,7 +108,7 @@ public class IceCream
 			for(int bb = 0; bb < options.length; bb++)
 			{
 				if(!(options[bb].equals(ignore)))
-					souv = souv + "\n" + getFlavor(options[bb]).toUpperCase();
+					souv = souv + "\n" + options[bb].toUpperCase();
 			}
 			souv = souv + "\n----------------------------------------\n";
 		}
@@ -105,112 +118,95 @@ public class IceCream
 	{
 		switch(f)
 		{
-			case "TF":
+			case "Tutti Frutti":
 				return "1267";
-			case "RO":
+			case "Rocky Road":
 				return "038";
-			case "RA":
+			case "Raspberry Ripple":
 				return "26";
-			case "DC":
+			case "Double Chocolate":
 				return "0";
-			case "DS":
+			case "Double Strawberry":
 				return "16";
-			case "CC":
+			case "Cookies and Cream":
 				return "4";
-			case "N":
+			case "Neapolitan":
 				return "016";
-			case "MCC":
+			case "Mint Chocolate Chip":
 				return "05";
-			case "TC":
+			case "The Classic":
 				return "067";
 		}
 		return "";
 	}
-	private String getFlavor(String f)
-	{
-		switch(f)
-		{
-			case "TF":
-				return "Tutti Frutti";
-			case "RO":
-				return "Rocky Road";
-			case "RA":
-				return "Raspberry Ripple";
-			case "DC":
-				return "Double Chocolate";
-			case "DS":
-				return "Double Strawberry";
-			case "CC":
-				return "Cookies & Cream";
-			case "N":
-				return "Neapolitan";
-			case "MCC":
-				return "Mint Chocolate Chip";
-			case "TC":
-				return "The Classic";
-		}
-		return "";
-	}
+	
 	private int getRow(String n)
 	{
 		switch(n)
 		{
-			case "MIKE":
-				return 0;
-			case "TIM":
-				return 1;
-			case "TOM":
-				return 2;
-			case "DAVE":
-				return 3;
-			case "ADAM":
-				return 4;
-			case "CHERYL":
-				return 5;
-			case "SEAN":
-				return 6;
-			case "ASHLEY":
-				return 7;
-			case "JESSICA":
-				return 8;
-			case "TAYLOR":
-				return 9;
-			case "SIMON":
-				return 10;
-			case "SALLY":
-				return 11;
-			case "JADE":
-				return 12;
-			case "SAM":
-				return 13;
-			case "GARY":
-				return 14;
-			case "VICTOR":
-				return 15;
-			case "GEORGE":
-				return 16;
-			case "JACOB":
-				return 17;
-			case "PAT":
-				return 18;
-			case "BOB":
-				return 19;
+			case "MIKE":return 0;
+			case "TIM":return 1;
+			case "TOM":return 2;
+			case "DAVE":return 3;
+			case "ADAM":return 4;
+			case "CHERYL":return 5;
+			case "SEAN":return 6;
+			case "ASHLEY":return 7;
+			case "JESSICA":return 8;
+			case "TAYLOR":return 9;
+			case "SIMON":return 10;
+			case "SALLY":return 11;
+			case "JADE":return 12;
+			case "SAM":return 13;
+			case "GARY":return 14;
+			case "VICTOR":return 15;
+			case "GEORGE":return 16;
+			case "JACOB":return 17;
+			case "PAT":return 18;
+			case "BOB":return 19;
 		}
 		return -1;
 	}
-	private boolean valid(String i)
+	
+	private JDialog getDialog(String[] arr, int div)
 	{
-		String[] conv = i.split(" ");
-		if(conv.length == 4)
+		JFrame frame = new JFrame();
+		JOptionPane optionPane = new JOptionPane();
+		JButton[] jButton = new JButton[arr.length];
+		if(arr.length % div == 0)
+			optionPane.setLayout(new GridLayout(arr.length / div, div));
+		else
+			optionPane.setLayout(new GridLayout(arr.length / div + 1, div));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		for(int aa = 0; aa < arr.length; aa++)
 		{
-			for(int aa = 0; aa < 4; aa++)
-			{
-				String temp = getFlavorAllergy(conv[aa]);
-				if(temp.length() == 0)
-					return false;
-			}
-			return true;
+			jButton[aa] = getButton(optionPane, arr[aa]);
+			optionPane.add(jButton[aa]);
 		}
-		return false;
+		return optionPane.createDialog(frame, "");
+	}
+	private JButton getButton(final JOptionPane optionPane, String text) {
+	    final JButton button = new JButton();
+	    button.setText(text);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(text.toUpperCase());
+	        sub = text.toUpperCase();
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
+	private String[] remove(String[] arr, String str)
+	{
+		String[] conv = new String[arr.length - 1];
+		int cur = 0;
+		for(int i = 0; i < arr.length; i++)
+		{
+			if(!(arr[i].equalsIgnoreCase(str)))
+				conv[cur++] = arr[i];
+		}
+		return conv;
 	}
 }

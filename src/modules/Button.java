@@ -2,6 +2,7 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class Button 
@@ -9,8 +10,8 @@ public class Button
 	private final BombEdgework ew;
 	private final boolean isSouv;
 	private String color;
-	private final int PT;
-	public Button(BombEdgework e, boolean s, int pt)
+	private final PlayType PT;
+	public Button(BombEdgework e, boolean s, PlayType pt)
 	{
 		ew = e;
 		isSouv = s;
@@ -45,7 +46,7 @@ public class Button
 	}
 	private void hold()
 	{
-		if(PT == 0)
+		if(PT == PlayType.EFM)
 		{
 			if(isSouv)
 			{

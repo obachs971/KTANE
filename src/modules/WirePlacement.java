@@ -2,16 +2,18 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class WirePlacement 
 {
-	private final int pt;
-	public WirePlacement(int p)
+	private final PlayType pt;
+	public WirePlacement(PlayType p)
 	{
 		pt = p;
 	}
 	public void run()
 	{
-		if(pt == 1)
+		if(pt == PlayType.Team)
 		{
 			String input = JOptionPane.showInputDialog("Red, Blue, Yellow,\nWhite, Black\nEnter the color at C3:").toUpperCase();
 			input = v1(input);

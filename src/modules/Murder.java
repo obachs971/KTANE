@@ -1,7 +1,13 @@
 package modules;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import start.BombEdgework;
@@ -20,6 +26,7 @@ public class Murder
 				{"HALL", "STUDY", "CONSERVATORY", "DINING ROOM", "LOUNGE", "BILLIARD ROOM"},
 				{"LIBRARY", "DINING ROOM", "HALL", "BILLIARD ROOM", "BALLROOM", "LOUNGE"}
 		};
+	private String sub;
 	private final BombEdgework ew;
 	public Murder(BombEdgework e)
 	{
@@ -29,40 +36,35 @@ public class Murder
 	{
 		ArrayList<String> suspects = new ArrayList<String>(), weapons = new ArrayList<String>();
 		//Inputting Suspects
+		String[] list = {"Miss Scarlett", "Professor Plum", "Mrs Peacock", "Reverend Green", "Colonel Mustard", "Mrs White"};
 		for(int aa = 0; aa < 4; aa++)
 		{
-			String input = JOptionPane.showInputDialog("Enter suspect #" + (aa + 1) + ":").toUpperCase();
-			boolean v = v1(input, suspects);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Enter suspect #" + (aa + 1) + ":").toUpperCase();
-				v = v1(input, suspects);
-			}
-			suspects.add(getSus(input));
+			JDialog dialog = getDialog(list, 2);
+			dialog.setTitle("Select Suspect #" + (aa + 1) + ":");
+			dialog.setVisible(true);
+			suspects.add(sub.toUpperCase());
+			list = remove(list, sub);
 		}
 		//Inputting weapons
+		list = new String[] {"Candlestick", "Dagger", "Lead Pipe", "Revolver", "Rope", "Spanner"};
 		for(int aa = 0; aa < 4; aa++)
-		{
-			String input = JOptionPane.showInputDialog("Enter weapon #" + (aa + 1) + ":").toUpperCase();
-			boolean v = v2(input, weapons);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Enter weapon #" + (aa + 1) + ":").toUpperCase();
-				v = v2(input, weapons);
-			}
-			weapons.add(getWeapon(input));
+		{	
+			JDialog dialog = getDialog(list, 2);
+			dialog.setTitle("Select Weapon #" + (aa + 1) + ":");
+			dialog.setVisible(true);
+			weapons.add(sub.toUpperCase());
+			list = remove(list, sub);
 		}
 		//Inputting the room
-		String room = JOptionPane.showInputDialog("Enter the red room:").toUpperCase();
-		room = getRoom(room);
-		while(room.length() == 0)
-		{
-			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-			room = JOptionPane.showInputDialog("Enter the red room:").toUpperCase();
-			room = getRoom(room);
-		}
+		list = new String[] {"Ballroom", "Billiard Room", "Conservatory", "Dining Room", "Hall", "Kitchen", "Lounge", "Library", "Study"};
+		JDialog dialog = getDialog(list, 3);
+		dialog.setTitle("Select the Red Room:");
+		dialog.setVisible(true);
+		String room = sub.toUpperCase();
+		
+		
+		
+		
 		int susRow, weaRow;
 		//Getting the suspect row
 		if(ew.findLit("TRN"))
@@ -130,86 +132,13 @@ public class Murder
 		souv = souv + "\nWEAPONS: " + weapons.get(0);
 		for(int aa = 1; aa < weapons.size(); aa++)
 			souv = souv + ", " + weapons.get(aa);
-		//System.out.println(souv);
+		System.out.println(souv);
 		return souv;
 	}
-	private String getSus(String s)
-	{
-		switch(s)
-		{
-			case "MISS SCARLETT":
-			case "SCARLETT":
-				return "SCARLETT";
-			case "PROFESSOR PLUM":
-			case "PLUM":
-				return "PLUM";
-			case "MRS PEACOCK":
-			case "PEACOCK":
-				return "PEACOCK";
-			case "REVEREND GREEN":
-			case "GREEN":
-				return "GREEN";
-			case "COLONEL MUSTARD":
-			case "MUSTARD":
-				return "MUSTARD";
-			case "MRS WHITE":
-			case "WHITE":
-				return "WHITE";
-		}
-		return "";
-	}
-	private String getWeapon(String w)
-	{
-		switch(w)
-		{
-			case "CANDLESTICK":
-			case "CANDLE":
-				return "CANDLESTICK";
-			case "DAGGER":
-				return "DAGGER";
-			case "LEAD PIPE":
-			case "PIPE":
-				return "LEAD PIPE";
-			case "REVOLVER":
-				return "REVOLVER";
-			case "ROPE":
-				return "ROPE";
-			case "SPANNER":
-				return "SPANNER";
-		}
-		return "";
-	}
-	private String getRoom(String r)
-	{
-		switch(r)
-		{
-			case "DINING ROOM":
-			case "DINING":	
-				return "DINING ROOM";
-			case "STUDY":
-				return "STUDY";
-			case "KITCHEN":
-				return "KITCHEN";
-			case "LOUNGE":
-				return "LOUNGE";
-			case "BILLIARD ROOM":
-			case "BILLIARD":
-				return "BILLIARD ROOM";
-			case "CONSERVATORY":
-				return "CONSERVATORY";
-			case "BALLROOM":
-			case "BALL":
-				return "BALLROOM";
-			case "HALL":
-				return "HALL";
-			case "LIBRARY":
-				return "LIBRARY";
-		}
-		return "";
-	}
+	
 	private int getSusCol(String s)
 	{
-		String[] sus = {"SCARLETT", "PLUM", "PEACOCK", "GREEN", "MUSTARD", "WHITE"};
+		String[] sus = {"MISS SCARLETT", "PROFESSOR PLUM", "MRS PEACOCK", "REVEREND GREEN", "COLONEL MUSTARD", "MRS WHITE"};
 		for(int aa = 0; aa < sus.length; aa++)
 		{
 			if(sus[aa].equals(s))
@@ -227,14 +156,42 @@ public class Murder
 		}
 		return -1;
 	}
-	private boolean v1(String s, ArrayList<String> sus)
+	private JDialog getDialog(String[] arr, int div)
 	{
-		String temp = getSus(s);
-		return (!(sus.contains(temp)) && getSusCol(temp) != -1);
+		JFrame frame = new JFrame();
+		JOptionPane optionPane = new JOptionPane();
+		JButton[] jButton = new JButton[arr.length];
+		optionPane.setLayout(new GridLayout(arr.length / div + (arr.length % div), div));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		for(int aa = 0; aa < arr.length; aa++)
+		{
+			jButton[aa] = getButton(optionPane, arr[aa]);
+			optionPane.add(jButton[aa]);
+		}
+		return optionPane.createDialog(frame, "");
 	}
-	private boolean v2(String w, ArrayList<String> wea)
+	private JButton getButton(final JOptionPane optionPane, String text) {
+	    final JButton button = new JButton();
+	    button.setText(text);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(text.toUpperCase());
+	        sub = text.toUpperCase();
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
+	private String[] remove(String[] arr, String str)
 	{
-		String temp = getWeapon(w);
-		return (!(wea.contains(temp)) && getWeaCol(temp) != -1);
+		String[] conv = new String[arr.length - 1];
+		int cur = 0;
+		for(int i = 0; i < arr.length; i++)
+		{
+			if(!(arr[i].equalsIgnoreCase(str)))
+				conv[cur++] = arr[i];
+		}
+		return conv;
 	}
 }

@@ -4,14 +4,15 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class Microcontroller 
 {
 	private final BombEdgework ew;
-	private final int playType;
+	private final PlayType playType;
 	private final boolean isSouv;
-	public Microcontroller(BombEdgework e, int pt, boolean s)
+	public Microcontroller(BombEdgework e, PlayType pt, boolean s)
 	{
 		ew = e;
 		playType = pt;
@@ -56,7 +57,7 @@ public class Microcontroller
 		else
 			colors = getColors(typeSize[0], typeSize[1], colors);
 		String souv = "PIN ORDER: ";
-		if(isSouv || playType == 1)
+		if(isSouv || playType == PlayType.Team)
 		{
 			ArrayList<String> remain = new ArrayList<String>();
 			for(int aa = 0; aa < colors.length(); aa++)

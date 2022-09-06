@@ -2,10 +2,12 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class Memory 
 {
-	private final int PT;
-	public Memory(int pt)
+	private final PlayType PT;
+	public Memory(PlayType pt)
 	{
 		PT = pt;
 	}
@@ -28,7 +30,7 @@ public class Memory
 	}
 	private void stage1()
 	{
-		if(PT == 1)
+		if(PT == PlayType.Team)
 		{
 			String display = JOptionPane.showInputDialog("Enter the displayed number:");
 			boolean v = (display.length() == 1 && "1234".indexOf(display) >= 0);
@@ -117,7 +119,7 @@ public class Memory
 	private void stage2()
 	{
 		String[] pos = {"1st", "2nd", "3rd", "4th"};
-		if(PT == 1)
+		if(PT == PlayType.Team)
 		{
 			String display = JOptionPane.showInputDialog("Enter the displayed number:");
 			boolean v = (display.length() == 1 && "1234".indexOf(display) >= 0);
@@ -207,7 +209,7 @@ public class Memory
 	private void stage3()
 	{
 		String[] pos = {"1st", "2nd", "3rd", "4th"};
-		if(PT == 1)
+		if(PT == PlayType.Team)
 		{
 			String display = JOptionPane.showInputDialog("Enter the displayed number:");
 			boolean v = (display.length() == 1 && "1234".indexOf(display) >= 0);
@@ -312,7 +314,7 @@ public class Memory
 	private void stage4()
 	{
 		String[] pos = {"1st", "2nd", "3rd", "4th"};
-		if(PT == 1)
+		if(PT == PlayType.Team)
 		{
 			String display = JOptionPane.showInputDialog("Enter the displayed number:");
 			boolean v = (display.length() == 1 && "1234".indexOf(display) >= 0);

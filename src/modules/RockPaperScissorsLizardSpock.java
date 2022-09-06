@@ -1,37 +1,74 @@
 package modules;
 
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import start.BombEdgework;
 
 public class RockPaperScissorsLizardSpock 
 {
+	private final double r;
 	private final BombEdgework ew;
-	public RockPaperScissorsLizardSpock(BombEdgework e)
+	public RockPaperScissorsLizardSpock(double resizer, BombEdgework e)
 	{
+		r = resizer;
 		ew = e;
 	}
 	public void run()
 	{
-		String input = JOptionPane.showInputDialog("Rock, Paper, Scissors,\nLizard, Spock\nEnter the decoy:").toUpperCase();
-		int decoy = getDecoy(input);
-		while(decoy == -1)
+		String[] names = {"Rock", "Paper", "Scissors", "Lizard", "Spock", "None"};
+		JFrame frame = new JFrame();
+		JOptionPane optionPane = new JOptionPane();
+		ImageIcon[] icon = new ImageIcon[names.length];
+		JButton[] jButton = new JButton[names.length];
+		optionPane.setLayout(new GridLayout(3, 2));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		for(int aa = 0; aa < names.length; aa++)
 		{
-			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-			input = JOptionPane.showInputDialog("Rock, Paper, Scissors,\nLizard, Spock\nEnter the decoy:").toUpperCase();
-			decoy = getDecoy(input);
+			icon[aa] = new ImageIcon("img/RPS" + names[aa] + ".png");
+			Image image = icon[aa].getImage();
+			image = image.getScaledInstance((int)(icon[aa].getIconWidth() / r), (int)(icon[aa].getIconHeight() / r), java.awt.Image.SCALE_SMOOTH);
+			icon[aa] = new ImageIcon(image);
+			jButton[aa] = getButton(optionPane, names[aa], icon[aa]);
+			optionPane.add(jButton[aa]);
 		}
+		JDialog dialog = optionPane.createDialog(frame, "");
+		dialog.setTitle("Select the middle icon:");
+		dialog.setVisible(true);
+		int decoy = getDecoy(optionPane.getValue().toString().toUpperCase());
 		int sign = row1(decoy);
 		String out;
 		if(sign == decoy)
 		{
+			if(decoy == 0)
+				icon = new ImageIcon[5];
+			else
+				icon = new ImageIcon[4];
+			int counter = 0;
 			sign--;
 			out = "";
 			String[] signs = {"Rock", "Paper", "Scissors", "Lizard", "Spock"};
 			for(int aa = 0; aa < signs.length; aa++)
 			{
 				if(aa != sign)
+				{
+					icon[counter] = new ImageIcon("img/RPS" + signs[aa] + ".png");
+					Image image = icon[counter].getImage();
+					image = image.getScaledInstance((int)(icon[counter].getIconWidth() / r), (int)(icon[counter].getIconHeight() / r), java.awt.Image.SCALE_SMOOTH);
+					icon[counter++] = new ImageIcon(image);
 					out = out + "" + signs[aa] + "\n";
+				}
+					
 			};
 		}
 		else
@@ -54,12 +91,33 @@ public class RockPaperScissorsLizardSpock
 					out = "Lizard\nPaper";
 					break;
 			}
+			String[] spl = out.split("\n");
+			icon = new ImageIcon[2];
+			for(int aa = 0; aa < 2; aa++)
+			{
+				icon[aa] = new ImageIcon("img/RPS" + spl[aa] + ".png");
+				Image image = icon[aa].getImage();
+				image = image.getScaledInstance((int)(icon[aa].getIconWidth() / r), (int)(icon[aa].getIconHeight() / r), java.awt.Image.SCALE_SMOOTH);
+				icon[aa] = new ImageIcon(image);
+			}
 		}
+		JLabel[] label = new JLabel[icon.length];
+		JFrame outFrame = new JFrame();
+		outFrame.setLayout(new GridLayout(icon.length, 1));
+		for(int aa = 0; aa < icon.length; aa++)
+		{
+			label[aa] = new JLabel();
+			label[aa].setIcon(icon[aa]);
+			outFrame.add(label[aa]);
+		}
+		outFrame.pack();
+		outFrame.setVisible(true);
 		JOptionPane.showMessageDialog(null, "Press these signs:\n" + out);
+		outFrame.setVisible(false);
 	}
 	private int getDecoy(String i)
 	{
-		String[] list = {"", "ROCK", "PAPER", "SCISSORS", "LIZARD", "SPOCK"};
+		String[] list = {"NONE", "ROCK", "PAPER", "SCISSORS", "LIZARD", "SPOCK"};
 		for(int aa = 0; aa < list.length; aa++)
 		{
 			if(i.equals(list[aa]))
@@ -180,4 +238,16 @@ public class RockPaperScissorsLizardSpock
 		else
 			return bestCur;	
 	}
+	private JButton getButton(final JOptionPane optionPane, String text, ImageIcon icon ) {
+	    final JButton button = new JButton();
+	    button.setIcon(icon);
+	    button.setText(text);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(text);
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
 }

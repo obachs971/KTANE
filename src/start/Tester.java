@@ -22,7 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
-
+import misc.PlayType;
 import modules.*;
 import java.util.List;
 public class Tester
@@ -36,105 +36,182 @@ public class Tester
 		UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("Dialog", Font.BOLD, (int)screenHeight / 80)));
 		double resizer = 1920.0 / screenWidth;
 		
-		Random r = new Random();
-		System.out.print((r.nextInt(4) + 1));
-		System.out.println((r.nextInt(3) + 1));
+		//Random r = new Random();
+		//System.out.print((r.nextInt(4) + 1));
+		//System.out.println((r.nextInt(3) + 1));
 		
-
-		//BombConfig con = new BombConfig();
+		
+		//BombConfig con = new BombConfig(0);
 		BombEdgework e = new BombEdgework(resizer);
-		
+		int timeZone = 0;
 		int num = 0;
 		while(num == 0)
 		{
-		    Battleship test = new Battleship(resizer, e);
-			test.run();
+		    MysticSquare test = new MysticSquare(e, PlayType.EFM, false);
+		    test.run();
 			
-
+			//num = 1;
 		}
-		
-		//System.out.println("\"" + word4.toString().replace("[", "").replace("]", "").replace(", ", "\", \"") + "\"");
-		//System.out.println("\"" + word5.toString().replace("[", "").replace("]", "").replace(", ", "\", \"") + "\"");
-		//System.out.println("\"" + word6.toString().replace("[", "").replace("]", "").replace(", ", "\", \"") + "\"");
-		//System.out.println("\"" + word7.toString().replace("[", "").replace("]", "").replace(", ", "\", \"") + "\"");
-		//System.out.println("\"" + word8.toString().replace("[", "").replace("]", "").replace(", ", "\", \"") + "\"");
-		//System.out.println((word4.size() + word5.size() + word6.size() + word7.size() + word8.size()));
-		//System.out.println(word6.size());
-		//System.out.println("\"" + other.toString().replace("[", "").replace("]", "").replace(", ", "\", \"") + "\"");
 		/*
-		Random r = new Random();
-		String c = "0000111122223333444455556666777788889999";
-		c = c.replace("0", "");
-		String[] grid = {"", "", "", "", "", ""};
-		for(int aa = 0; aa < 6; aa++)
-		{
-			for(int bb = 0; bb < 6; bb++)
+		String[] list = 
 			{
-				num = r.nextInt(c.length());
-				grid[aa] = grid[aa] + "" + c.charAt(num);
-				c = c.substring(0, num) + "" + c.substring(num + 1);
-			}
-		}
-		c = "0123456789".replace("0", "");
-		for(int aa = 0; aa < c.length(); aa++)
+					"13/1",
+					"30/1",
+					"14/2",
+					"1/4",
+					"4/4",
+					"12/4",
+					"30/4",
+					"11/5",
+					"13/5",
+					"27/5",
+					"5/6",
+					"25/6",
+					"4/7",
+					"16/7",
+					"27/7",
+					"28/7",
+					"2/8",
+					"20/8",
+					"1/9",
+					"2/9",
+					"4/9",
+					"11/9",
+					"2/10",
+					"16/10",
+					"1/11",
+					"11/11",
+					"20/11",
+					"7/12",
+					"18/12"
+			};
+		int[] vals = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+		for(int i = 1; i < vals.length; i++)
 		{
-			for(int bb = aa + 1; bb < c.length(); bb++)
+			for(int j = 1; j <= vals[i]; j++)
 			{
-				for(int cc = bb + 1; cc < c.length(); cc++)
+				String check = j + "/" + i;
+				if(checking(list, check))
 				{
-					String[] maze = new String[8];
-					maze[0] = "WWWWWWWW";
-					maze[7] = "WWWWWWWW";
-					for(int dd = 0; dd < 6; dd++)
-						maze[dd + 1] = "W" + grid[dd].replace(c.charAt(aa) + "", "W").replace(c.charAt(bb) + "", "W").replace(c.charAt(cc) + "", "W") + "W";
-					for(int dd = 0; dd < maze.length; dd++)
-						System.out.println(maze[dd]);
-					System.out.println("----------------");
+					int num = j - 1;
+					for(int k = 1; k < i; k++)
+						num += vals[k];
+					System.out.println(num);
 				}
 			}
 		}*/
+		/*
+		File moveList = new File("files/Tester.txt");
+		Scanner reader = new Scanner(moveList);
+		String finder = reader.nextLine();
+		int cur = 0;
 		
-		
-		
-		
-		
-		
-		/*int max = 10;
-		for(int aa = 0; aa < max; aa++)
+		for(int i = 0; i < 2000; i++)
 		{
-			for(int bb = aa + 1; bb < max; bb++)
-			{
-				String[] maze = {"", "", "", "", "", "", "", "", "", "", "", "", ""};
-				for(int cc = 0; cc < 13; cc++)
-				{
-					for(int dd = 0; dd < 13; dd++)
-					{
-						if(mazes[aa][cc].charAt(dd) == mazes[bb][cc].charAt(dd))
-							maze[cc] = maze[cc] + "" + mazes[aa][cc].charAt(dd);
-						else
-							maze[cc] = maze[cc] + "O";
-					}
-						System.out.println(maze[cc]);
-				}
-					System.out.println("--------------------");
-				for(int cc = 0; cc < 6; cc++)
-				{
-					for(int dd = 0; dd < 6; dd++)
-					{
-						String[] temp = new String[maze.length];
-						for(int ee = 0; ee < temp.length; ee++)
-							temp[ee] = maze[ee].toUpperCase();
-						boolean b = mazeSolver(temp, new int[] {1 + (dd * 2), 1 + (cc * 2)}, new int[] {11, 11});
-						if(!(b))
-						{
-							System.out.println("MAZES: " + (aa) + ", " + (bb) + "\nROW: " + (cc + 1) + "\nCOL: " + (dd + 1));
-							System.exit(0);
-						}
-					}
-				}
-			}
+			int index = finder.indexOf("\"Symbol\":", cur);
+			cur = finder.indexOf(",", index);
+			System.out.print("\"" + finder.substring(index + 10, cur - 1).toUpperCase() + "\",");
+			if((i + 1) % 10 == 0)
+				System.out.println("");
 		}*/
 		System.exit(0);
+	}
+	public static boolean checking(String[] arr, String str)
+	{
+		for(String s : arr)
+		{
+			if(str.equals(s))
+				return true;
+		}
+		return false;
+	}
+	public static int getScore(String[] arr)
+	{
+		int score = 0;
+		boolean flag = false;
+		for(int i = 0; i <= 65535; i++)
+		{
+			System.out.println(i);
+			String grid = decToBin(i + 0);
+			while(grid.length() < 16)
+				grid = "0" + grid;
+			for(int j = 1; j < 27; j++)
+			{
+				String bin = decToBin(j + 0);
+				while(bin.length() < 5)
+					bin = "0" + bin;
+				flag = false;
+				for(int len = 0; len < arr.length; len++)
+				{
+					for(int con = 0; con < 16; con++)
+					{
+						String temp = arr[len].toUpperCase();
+						for(int cc = 0; cc < (con / 4); cc++)
+							temp = down(temp);
+						for(int dd = 0; dd < (con % 4); dd++)
+							temp = right(temp.toCharArray());
+						String com = "";
+						for(int zz = 0; zz < temp.length(); zz++)
+						{
+							if(temp.charAt(zz) == 'X')
+								com = com + "" + grid.charAt(zz);
+						}
+						if(com.equals(bin))
+						{
+							flag = true;
+							break;
+						}
+					}
+					if(flag)
+						break;
+				}
+				if(!(flag))
+					break;
+			}
+			if(flag)
+				score++;
+			
+		}
+		return score;
+	}
+	private static String decToBin(int n)
+	{
+		if(n == 0)
+			return "0";
+		String str = "";
+		while(n > 0)
+		{
+			str = (n % 2) + "" + str;
+			n /= 2;
+		}
+		return str;
+	}
+	public static String right(char[] s)
+	{
+		return s[3] + "" + s[0] + "" + s[1] + "" + s[2] + "" + s[7] + "" + s[4] + "" + s[5] + "" + s[6] + "" + s[11] + "" + s[8] + "" + s[9] + "" + s[10] + "" + s[15] + "" + s[12] + "" + s[13] + "" + s[14];
+	}
+	public static String down(String s)
+	{
+		return s.substring(12, 16) + s.substring(0, 12);
+	}
+	public static String right(String s)
+	{
+		return (s.charAt(s.length() - 1) + "" + s.substring(0, s.length() - 1));
+	}
+	public static String left(String s)
+	{
+		return (s.substring(1) + "" + s.charAt(0));
+	}
+	public static int GCD(int a, int b)
+	{
+		int r = a % b;
+		while(r > 0)
+		{
+			a = b;
+			b = r;
+			r = a % b;
+		}
+		return b;
 	}
 	public static void Levels()
 	{
@@ -154,25 +231,6 @@ public class Tester
 				
 			}
 		}
-	}
-	public static void GCD(int a, int b)
-	{
-		int t1 = 0;
-		int t2 = 1;
-		int r = a % b;
-		while(r > 0)
-		{
-			int q = a / b;
-			int t3 = t1 - (t2 * q);
-			t1 = t2;
-			t2 = t3;
-			a = b;
-			b = r;
-			r = a % b;
-		}
-		while(t2 < 0)
-			t2 += 26;
-		System.out.println(t2);
 	}
 	public static ArrayList<String> getList(String[][] chart)
 	{
@@ -360,5 +418,24 @@ public class Tester
 			}
 		}
 		return false;
+	}
+	public static int EEA(int A, int B)
+	{
+		int Q = A / B;
+		int R = A % B;
+		int T1 = 0;
+		int T2 = 1;
+		int T3 = T1 - (T2 * Q);
+		while (R > 0)
+		{
+			A = B;
+			B = R;
+			Q = A / B;
+			R = A % B;
+			T1 = T2;
+			T2 = T3;
+			T3 = T1 - (T2 * Q);
+		}
+		return T2;
 	}
 }

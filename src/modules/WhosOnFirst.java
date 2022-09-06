@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 
 public class WhosOnFirst 
 {
@@ -38,15 +40,15 @@ public class WhosOnFirst
 				{"YOU ARE", "DONE", "LIKE", "YOU'RE", "YOU", "HOLD", "UH HUH", "UR", "SURE"},
 				{"YOU'RE", "NEXT", "U", "UR", "HOLD", "DONE", "UH UH", "WHAT?", "UH HUH", "YOU", "LIKE"}
 		};
-	private final int PT;
-	public WhosOnFirst(int pt)
+	private final PlayType PT;
+	public WhosOnFirst(PlayType pt)
 	{
 		PT = pt;
 	}
 	public String run()
 	{
 		ArrayList<String> displayed = new ArrayList<String>();
-		if(PT == 1)
+		if(PT == PlayType.Team)
 		{
 			for(int zz = 0; zz < 3; zz++)
 			{

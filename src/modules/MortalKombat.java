@@ -12,22 +12,26 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import start.BombEdgework;
+
 public class MortalKombat 
 {
 	private final String[][] moveTables =
 		{
-				{"L R A", "L R B", "D D C", "D D L C U B", "L L L B B U", "D L U D A B", "132", "213", "321", "231", "123", "312"},
-				{"U D C", "R R B", "D L A", "A D B U L C", "U U R R C B", "A B C L L U", "", "", "", "", "", ""},
-				{"R R C", "R U A", "L D B", "D R B L B D", "R R D A U C", "R R L L U A", "", "", "", "", "", ""},
-				{"L L B", "D R A", "D U C", "A A L U R B", "D U D U B B", "C U L A B D", "", "", "", "", "", ""},
-				{"L L A", "L R C", "U U B", "R R R B B B", "U U D L A C", "A R B D C D", "", "", "", "", "", ""},
-				{"U R A", "D L C", "R L B", "R L L R C B", "D U R B L A", "U U D L A C", "", "", "", "", "", ""},
-				{"R U B", "R R A", "R D C", "L U R D C C", "R D L U A A", "U R A L U B", "", "", "", "", "", ""}
+				{"◀ ▶ A", "◀ ▶ B", "▼ ▼ C", "▼ ▼ ◀ C ▲ B", "◀ ◀ ◀ B B ▲", "▼ ◀ ▲ ▼ A B", "132", "213", "321", "231", "123", "312"},
+				{"▲ ▼ C", "▶ ▶ B", "▼ ◀ A", "A ▼ B ▲ ◀ C", "▲ ▲ ▶ ▶ C B", "A B C ◀ ◀ ▲", "312", "213", "123", "321", "231", "132"},
+				{"▶ ▶ C", "▶ ▲ A", "◀ ▼ B", "▼ ▶ B ◀ B ▼", "▶ ▶ ▼ A ▲ C", "▶ ▶ ◀ ◀ ▲ A", "231", "123", "312", "132", "213", "321"},
+				{"◀ ◀ B", "▼ ▶ A", "▼ ▲ C", "A A ◀ ▲ ▶ B", "▼ ▲ ▼ ▲ B B", "C ▲ ◀ A B ▼", "321", "231", "132", "312", "213", "123"},
+				{"◀ ◀ A", "◀ ▶ C", "▲ ▲ B", "▶ ▶ ▶ B B B", "▲ ▲ ▼ ◀ A C", "A ▶ B ▼ C ▼", "123", "312", "213", "321", "231", "132"},
+				{"▲ ▶ A", "▼ ◀ C", "▶ ◀ B", "▶ ◀ ◀ ▶ C B", "▼ ▲ ▶ B ◀ A", "▲ ▲ ▼ ◀ A C", "321", "231", "132", "123", "312", "213"},
+				{"▶ ▲ B", "▶ ▶ A", "▶ ▼ C", "◀ ▲ ▶ ▼ C C", "▶ ▼ ◀ ▲ A A", "▲ ▶ A ◀ ▲ B", "132", "213", "321", "123", "312", "231"}
 		};
 	private final double r;
-	public MortalKombat(double resizer)
+	private final BombEdgework ew;
+	public MortalKombat(double resizer, BombEdgework e)
 	{
 		r = resizer;
+		ew = e;
 	}
 	public void run()
 	{
@@ -81,11 +85,70 @@ public class MortalKombat
 		dialog.setVisible(true);
 		input = optionPane.getValue().toString();
 		int oppose = characters.indexOf(input);
-		
+		String out = "Press these buttons:";
+		for(int i = 1; i <= 3; i++)
+			out = out + "\n" + moveTables[playing][moveTables[playing][oppose + 6].indexOf(i + "")];
+		int num;
+		if(oppose < 3)
+		{
+			switch(playing)
+			{
+				case 0:
+					num = (ew.findPort("PARALLEL") > 0 || ew.findPort("SERIAL") > 0) ? 3 : (ew.getSNDIG(ew.numSNDIGS() - 1) % 2 == 1) ? 4 : 5;
+					break;
+				case 1:
+					num = (ew.BD() > ew.BA()) ? 3 : (ew.numUnlit() == 0) ? 4 : 5;
+					break;
+				case 2:
+					num = (ew.numLit() > 0) ? 3 : (ew.findPort("RCA") > 0 || ew.findPort("PS/2") > 0) ? 4 : 5;
+					break;
+				case 3:
+					num = (ew.BAT() <= 4) ? 3 : (ew.numCharsInSN("LPT") > 0) ? 4 : 5;
+					break;
+				case 4:
+					num = (ew.numPorts() > 3) ? 3 : (ew.BA() > ew.BD()) ? 4 : 5;
+					break;
+				case 5:
+					num = (ew.numInd() > ew.numPorts()) ? 3 : (ew.getSNDIG(0) > ew.BAT()) ? 4 : 5;
+					break;
+				default:
+					num = (ew.getSNSUM() % 3 == 0) ? 3 : (ew.BAT() == 0) ? 4 : 5;
+					break;
+			}
+		}
+		else	
+		{
+			switch(playing)
+			{
+				case 0:
+					num = (ew.findLit("CAR") || ew.findLit("CLR") || ew.findLit("MSA") || ew.findUnlit("BOB") || ew.findUnlit("NSA") || ew.findUnlit("FRK")) ? 3 : (ew.BAT() % 2 == 0) ? 4 : 5;
+					break;
+				case 1:
+					num = (ew.numCharsInSN("AEIOU") > 0) ? 3 : (ew.findPort("DVI-D") > 0 || ew.findPort("RJ-45") > 0) ? 4 : 5;
+					break;
+				case 2:
+					num = (prime(ew.getSNSUM())) ? 3 : (ew.BD() == 0) ? 4 : 5;
+					break;
+				case 3:
+					num = (ew.numInd() == 0) ? 3 : (ew.findPort("SERIAL") > 1) ? 4 : 5;
+					break;
+				case 4:
+					num = (ew.getSNDIG(ew.numSNDIGS() - 1) % 2 == 0) ? 3 : (ew.findLit("BOB") || ew.findLit("FRK") || ew.findUnlit("FRQ") || ew.findUnlit("CAR")) ? 4 : 5;
+					break;
+				case 5:
+					num = (ew.BAT() > ew.getSNDIG(0)) ? 3 : (ew.numPorts() > ew.numInd()) ? 4 : 5;
+					break;
+				default:
+					num = (ew.numLit() == 0) ? 3 : (ew.findPort("PARALLEL") > 0 || ew.findPort("RCA") > 0) ? 4 : 5;
+					break;
+			}
+		}
+		JOptionPane.showMessageDialog(null, out + "\n" + moveTables[playing][num]);
 	}
 	private JButton getButton(final JOptionPane optionPane, String name, ImageIcon icon ) {
 	    final JButton button = new JButton();
 	    button.setIcon(icon);
+	    button.setText(name);
 	    ActionListener actionListener = new ActionListener() {
 	      public void actionPerformed(ActionEvent actionEvent) {
 	        optionPane.setValue(name);
@@ -94,4 +157,15 @@ public class MortalKombat
 	    button.addActionListener(actionListener);
 	    return button;
 	  }
+	private boolean prime(int n)
+	{
+		if(n < 2)
+			return false;
+		for(int i = 2; i < n; i++)
+		{
+			if(n % i == 0)
+				return false;
+		}
+		return true;
+	}
 }

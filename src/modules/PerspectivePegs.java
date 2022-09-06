@@ -2,6 +2,7 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class PerspectivePegs 
@@ -40,8 +41,8 @@ public class PerspectivePegs
 				}
 		};
 	private final BombEdgework ew;
-	private final int playStyle;
-	public PerspectivePegs(BombEdgework e, int ps)
+	private final PlayType playStyle;
+	public PerspectivePegs(BombEdgework e, PlayType ps)
 	{
 		ew = e;
 		playStyle = ps;
@@ -53,7 +54,7 @@ public class PerspectivePegs
 			keyNum += (getDiff(ew.getSNLET(2), ew.getSNLET(3)));
 		char keyColor = "RGPRYBPGBY".charAt(keyNum % 10);
 		String souv = "COLOR SEQUENCE: ";
-		if(playStyle == 2)//TP style
+		if(playStyle == PlayType.TP)//TP style
 		{
 			//Input the colors of each peg
 			String[] pegs = getPegs(keyColor), orders = {"43021", "04132", "34201", "40312", "01423"}, pos = {"T", "TR", "BR", "BL", "TL"};

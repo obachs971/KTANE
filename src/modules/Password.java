@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class Password 
 {
 	private final String[] words =
@@ -16,15 +18,15 @@ public class Password
 			"THESE", "THING", "THINK", "THREE", "WATER",
 			"WHERE", "WHICH", "WORLD", "WOULD", "WRITE"
 		};
-	private final int playType;
-	public Password(int pt)
+	private final PlayType playType;
+	public Password(PlayType pt)
 	{
 		playType = pt;
 	}
 	public void run()
 	{
 		
-		if(playType == 1)
+		if(playType == PlayType.Team)
 		{
 			String type = "the";
 			while(true)
@@ -118,7 +120,7 @@ public class Password
 	}
 	private boolean valid(String i, int l)
 	{
-		if(playType == 1 && i.length() == 0)
+		if(playType == PlayType.Team && i.length() == 0)
 			return true;
 		if(i.length() == l)
 		{

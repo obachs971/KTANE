@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class BinaryLEDs 
 {
 	
@@ -40,8 +42,8 @@ public class BinaryLEDs
 				"RED: 12\nGREEN: 12\nBLUE: 15",
 				"RED: 16\nGREEN: 4\nBLUE: 12"
 		};
-	private final int pt;
-	public BinaryLEDs(int p)
+	private final PlayType pt;
+	public BinaryLEDs(PlayType p)
 	{
 		pt = p;
 	}
@@ -55,7 +57,7 @@ public class BinaryLEDs
 			input = JOptionPane.showInputDialog("Enter 3 led numbers:");
 			row = valid(input);
 		}
-		JOptionPane.showMessageDialog(null, outs[row.get(0)][pt / 2]);
+		JOptionPane.showMessageDialog(null, outs[row.get(0)][pt.getValue() / 2]);
 		String souv = souvData[row.get(0)];
 		return souv;
 	}

@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class TurnTheKeys 
@@ -13,11 +14,11 @@ public class TurnTheKeys
 	private final BombEdgework bombEW;
 	private final double resizer;
 	private final boolean souv;
-	private final int playType;
+	private final PlayType playType;
 	private final ArrayList<String> timeModuleList;
 	private final ArrayList<int[]> timeWarns;
 	
-	public TurnTheKeys(BombEdgework e, double r, boolean s, int pt, ArrayList<String> tml, ArrayList<int[]> tw)
+	public TurnTheKeys(BombEdgework e, double r, boolean s, PlayType pt, ArrayList<String> tml, ArrayList<int[]> tw)
 	{
 		bombEW = e;
 		resizer = r;

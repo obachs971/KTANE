@@ -1,13 +1,11 @@
 package modules;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class MysticSquare 
@@ -31,13 +29,13 @@ public class MysticSquare
 			"123?4????", "1??24?3??", "????4?123", "??1?42??3"
 		};
 	private final BombEdgework ew;
-	private final int pt;
+	private final PlayType pt;
 	private final boolean isSouv;
 	private String moveAllSpace;
 	private String constellation;
 	private boolean first;
 	
-	public MysticSquare(BombEdgework e, int playType, boolean s)
+	public MysticSquare(BombEdgework e, PlayType playType, boolean s)
 	{
 		ew = e;
 		pt = playType;
@@ -46,7 +44,7 @@ public class MysticSquare
 	public String run() throws IOException
 	{
 		String souv = "SKULL POSITION: ";
-		if(pt == 1)
+		if(pt == PlayType.Team)
 		{
 			String input = JOptionPane.showInputDialog("- - Blank\nEnter the middle number:");
 			boolean v = v2(input, "-12345678");
@@ -114,170 +112,114 @@ public class MysticSquare
 				v = valid(grid);
 			}
 			boolean serialNumberCross = (grid.charAt(0) == ew.getSNCHAR(5) || grid.charAt(2) == ew.getSNCHAR(5) || grid.charAt(4) == ew.getSNCHAR(5) || grid.charAt(6) == ew.getSNCHAR(5) || grid.charAt(8) == ew.getSNCHAR(5));
-			File moveList = new File("files/MysticSquareMoveList.txt");
-			if(!(moveList.createNewFile()))
-			{
-				Scanner reader = new Scanner(moveList);
-				while(reader.hasNextLine())
-				{
-					String config = reader.nextLine();
-					boolean cross = reader.nextBoolean();
-					reader.nextLine();
-					if(grid.equals(config) && serialNumberCross == cross)
-					{
-						String[] temp = reader.nextLine().split(" ");
-						first = false;
-						String allNums = "12345678";
-						for(int aa = 0; aa < temp[0].length(); aa++)
-						{
-							moveAllSpace = moveAllSpace + "" + temp[0].charAt(aa) + " ";
-							allNums = allNums.replace(temp[0].charAt(aa) + "", "");
-							if((aa + 1) % 4 == 0)
-								moveAllSpace = moveAllSpace + "\n";
-						}
-						for(int aa = 0; aa < temp[1].length(); aa++)
-						{
-							constellation = constellation + "" + temp[1].charAt(aa) + " ";
-							if((aa + 1) % 3 == 0)
-								constellation = constellation + "\n";
-						}
-						for(int aa = 0; aa < temp[2].length(); aa++)
-						{
-							out = out + "" + temp[2].charAt(aa);
-							if((aa + 1) % 12 == 0)
-								out = out + "\n";
-							else if((aa + 1) % 3 == 0)
-								out = out + " ";
-						}
-						souv = souv + "" + posNames[grid.indexOf(allNums)];
-						JOptionPane.showMessageDialog(null, "Move these spaces first:\n" + moveAllSpace + "\nConstellation Solution:\n" + constellation + "\nFull Solution:\n" + out);
-						break;
-					}
-					else
-							reader.nextLine();
-				}
-				reader.close();
-			}
-			if(first)
-			{
-				String[] tempGrid = new String[5];
-				tempGrid[0] = "WWWWW";
-				tempGrid[4] = "WWWWW";
-				for(int aa = 1; aa < 4; aa++)
-					tempGrid[aa] = "W" + grid.substring((aa - 1) * 3, aa * 3) + "W";
+			String[] tempGrid = new String[5];
+			tempGrid[0] = "WWWWW";
+			tempGrid[4] = "WWWWW";
+			for(int aa = 1; aa < 4; aa++)
+				tempGrid[aa] = "W" + grid.substring((aa - 1) * 3, aa * 3) + "W";
 
-				//Finding the Skull
-				int cursor = grid.indexOf('7');
-				if(grid.charAt(4) != '-')
+			//Finding the Skull
+			int cursor = grid.indexOf('7');
+			if(grid.charAt(4) != '-')
+			{
+				cursor = grid.indexOf('-');
+				int rowcol = "12345678".indexOf(grid.charAt(4));
+				if(serialNumberCross)
 				{
-					cursor = grid.indexOf('-');
-					int rowcol = "12345678".indexOf(grid.charAt(4));
-					if(serialNumberCross)
+					for(int aa = 0; aa < 8; aa++)
 					{
-						for(int aa = 0; aa < 8; aa++)
-						{
-							if(tempGrid[(cursor / 3)].charAt((cursor % 3) + 1) == chart[rowcol][aa])
-								cursor -= 3;
-							else if(tempGrid[(cursor / 3) + 1].charAt((cursor % 3) + 2) == chart[rowcol][aa])
-								cursor += 1;
-							else if(tempGrid[(cursor / 3) + 2].charAt((cursor % 3) + 1) == chart[rowcol][aa])
-								cursor += 3;
-							else if(tempGrid[(cursor / 3) + 1].charAt((cursor % 3)) == chart[rowcol][aa])
-								cursor -= 1;
-						}
-					}
-					else
-					{
-						for(int aa = 0; aa < 8; aa++)
-						{
-							if(tempGrid[(cursor / 3)].charAt((cursor % 3) + 1) == chart[aa][rowcol])
-								cursor -= 3;
-							else if(tempGrid[(cursor / 3) + 1].charAt((cursor % 3) + 2) == chart[aa][rowcol])
-								cursor += 1;
-							else if(tempGrid[(cursor / 3) + 2].charAt((cursor % 3) + 1) == chart[aa][rowcol])
-								cursor += 3;
-							else if(tempGrid[(cursor / 3) + 1].charAt((cursor % 3)) == chart[aa][rowcol])
-								cursor -= 1;
-						}
+						if(tempGrid[(cursor / 3)].charAt((cursor % 3) + 1) == chart[rowcol][aa])
+							cursor -= 3;
+						else if(tempGrid[(cursor / 3) + 1].charAt((cursor % 3) + 2) == chart[rowcol][aa])
+							cursor += 1;
+						else if(tempGrid[(cursor / 3) + 2].charAt((cursor % 3) + 1) == chart[rowcol][aa])
+							cursor += 3;
+						else if(tempGrid[(cursor / 3) + 1].charAt((cursor % 3)) == chart[rowcol][aa])
+							cursor -= 1;
 					}
 				}
-				souv = souv + "" + posNames[cursor];
-				tempGrid[(cursor / 3) + 1] = tempGrid[(cursor / 3) + 1].replace(grid.charAt(cursor), 'W');
-				
-				
-				//Setting up maze
-				String[][] maze = new String[8][];
-				int counter = 0;
-				for(int aa = 1; aa < 4; aa++)
+				else
 				{
-					for(int bb = 1; bb < 4; bb++)
+					for(int aa = 0; aa < 8; aa++)
 					{
-						if(tempGrid[aa].charAt(bb) != 'W')
-						{
-							String temp = tempGrid[aa].charAt(bb) + "";
-							if(tempGrid[aa - 1].charAt(bb) != 'W')
-								temp = temp + " " + tempGrid[aa - 1].charAt(bb);
-							if(tempGrid[aa].charAt(bb + 1) != 'W')
-								temp = temp + " " + tempGrid[aa].charAt(bb + 1);
-							if(tempGrid[aa + 1].charAt(bb) != 'W')
-								temp = temp + " " + tempGrid[aa + 1].charAt(bb);
-							if(tempGrid[aa].charAt(bb - 1) != 'W')
-								temp = temp + " " + tempGrid[aa].charAt(bb - 1);
-							maze[counter] = temp.split(" ");
-							counter++;
-						}
+						if(tempGrid[(cursor / 3)].charAt((cursor % 3) + 1) == chart[aa][rowcol])
+							cursor -= 3;
+						else if(tempGrid[(cursor / 3) + 1].charAt((cursor % 3) + 2) == chart[aa][rowcol])
+							cursor += 1;
+						else if(tempGrid[(cursor / 3) + 2].charAt((cursor % 3) + 1) == chart[aa][rowcol])
+							cursor += 3;
+						else if(tempGrid[(cursor / 3) + 1].charAt((cursor % 3)) == chart[aa][rowcol])
+							cursor -= 1;
 					}
 				}
-				ArrayList<String> longestPaths = getLongestPath("-", maze);
-				
-				ArrayList<String> solutionPaths = new ArrayList<String>();
-				for(int aa = 0; aa < longestPaths.size(); aa++)
-				{
-					//System.out.println(longestPaths.get(aa));
-					solutionPaths.add(finalStep(grid.toUpperCase(), longestPaths.get(aa).toUpperCase(), tempGrid));
-					if(solutionPaths.get(solutionPaths.size() - 1).length() == 0)
-						solutionPaths.remove(solutionPaths.size() - 1);
-				}
-				int best = solutionPaths.get(0).length();
-				int cur = 0;
-				for(int aa = 1; aa < solutionPaths.size(); aa++)
-				{
-					if(solutionPaths.get(aa).length() < best)
-					{
-						best = solutionPaths.get(aa).length();
-						cur = aa;
-					}
-				}
-				if(solutionPaths.get(cur).length() - moveAllSpace.length() >= 13)
-				{
-					FileWriter writer = new FileWriter(moveList, true);
-					writer.write(grid + "\n" + serialNumberCross + "\n" + moveAllSpace + " " + constellation + " " + solutionPaths.get(cur) + "\n");
-					writer.close();
-				}
-				String outConstellation = "";
-				String outMove = "";
-				for(int aa = 0; aa < moveAllSpace.length(); aa++)
-				{
-					outMove = outMove + "" + moveAllSpace.charAt(aa) + " ";
-					if((aa + 1) % 4 == 0)
-						outMove = outMove + "\n";
-				}
-				for(int aa = 0; aa < constellation.length(); aa++)
-				{
-					outConstellation = outConstellation + "" + constellation.charAt(aa) + " ";
-					if((aa + 1) % 3 == 0)
-						outConstellation = outConstellation + "\n";
-				}
-				for(int aa = 0; aa < solutionPaths.get(cur).length(); aa++)
-				{
-					out = out + "" + solutionPaths.get(cur).charAt(aa);
-					if((aa + 1) % 12 == 0)
-						out = out + "\n";
-					else if((aa + 1) % 3 == 0)
-						out = out + " ";
-				}
-				JOptionPane.showMessageDialog(null, "Move these spaces first:\n" + outMove + "\nConstellation Solution:\n" + outConstellation + "\nFull Solution:\n" + out);
 			}
+			souv = souv + "" + posNames[cursor];
+			tempGrid[(cursor / 3) + 1] = tempGrid[(cursor / 3) + 1].replace(grid.charAt(cursor), 'W');
+			//Setting up maze
+			String[][] maze = new String[8][];
+			int counter = 0;
+			for(int aa = 1; aa < 4; aa++)
+			{
+				for(int bb = 1; bb < 4; bb++)
+				{
+					if(tempGrid[aa].charAt(bb) != 'W')
+					{
+						String temp = tempGrid[aa].charAt(bb) + "";
+						if(tempGrid[aa - 1].charAt(bb) != 'W')
+							temp = temp + " " + tempGrid[aa - 1].charAt(bb);
+						if(tempGrid[aa].charAt(bb + 1) != 'W')
+							temp = temp + " " + tempGrid[aa].charAt(bb + 1);
+						if(tempGrid[aa + 1].charAt(bb) != 'W')
+							temp = temp + " " + tempGrid[aa + 1].charAt(bb);
+						if(tempGrid[aa].charAt(bb - 1) != 'W')
+							temp = temp + " " + tempGrid[aa].charAt(bb - 1);
+						maze[counter] = temp.split(" ");
+						counter++;
+					}
+				}
+			}
+			String longestPath = getLongestPath("-", maze);
+			ArrayList<String> solutionPaths = new ArrayList<String>();
+			/*
+			for(int aa = 0; aa < longestPaths.size(); aa++)
+			{
+				//System.out.println(longestPaths.get(aa));
+				solutionPaths.add(finalStep(grid.toUpperCase(), longestPaths.get(aa).toUpperCase(), tempGrid));
+			}*/
+			solutionPaths.add(finalStep(grid.toUpperCase(), longestPath.toUpperCase(), tempGrid));
+			int best = solutionPaths.get(0).length();
+			int cur = 0;
+			for(int aa = 1; aa < solutionPaths.size(); aa++)
+			{
+				if(solutionPaths.get(aa).length() < best)
+				{
+					best = solutionPaths.get(aa).length();
+					cur = aa;
+				}
+			}
+			String outConstellation = "";
+			String outMove = "";
+			for(int aa = 0; aa < moveAllSpace.length(); aa++)
+			{
+				outMove = outMove + "" + moveAllSpace.charAt(aa) + " ";
+				if((aa + 1) % 4 == 0)
+					outMove = outMove + "\n";
+			}
+			for(int aa = 0; aa < constellation.length(); aa++)
+			{
+				outConstellation = outConstellation + "" + constellation.charAt(aa) + " ";
+				if((aa + 1) % 3 == 0)
+					outConstellation = outConstellation + "\n";
+			}
+			for(int aa = 0; aa < solutionPaths.get(cur).length(); aa++)
+			{
+				out = out + "" + solutionPaths.get(cur).charAt(aa);
+				if((aa + 1) % 12 == 0)
+					out = out + "\n";
+				else if((aa + 1) % 3 == 0)
+					out = out + " ";
+			}
+			JOptionPane.showMessageDialog(null, "Move these spaces first:\n" + outMove + "\nConstellation Solution:\n" + outConstellation + "\nFull Solution:\n" + out);
 		}
 		return souv;
 	}
@@ -330,12 +272,9 @@ public class MysticSquare
 			}while(allNumbers.length() > 1);
 			longestPath = "-" + tempPath.toUpperCase();
 		}
-		
-		
-		
 		//Start finding out the solutions
-		ArrayList<String> solutions = new ArrayList<String>();
-		solutions.add("12345678-");
+		String solution;
+		//solutions.add("12345678-");
 		int[][] ColRowSum = new int[2][3];
 		for(int aa = 0; aa < 3; aa++)
 		{
@@ -351,18 +290,18 @@ public class MysticSquare
 		else
 			cursor = 3;
 		if(ColRowSum[1][0] > ColRowSum[1][1] && ColRowSum[1][0] > ColRowSum[1][2])
-			solutions.add(constellations[cursor].toUpperCase());
+			solution = (constellations[cursor].toUpperCase());
 		else if(ColRowSum[1][1] > ColRowSum[1][0] && ColRowSum[1][1] > ColRowSum[1][2])
-			solutions.add(constellations[cursor + 4].toUpperCase());
+			solution = (constellations[cursor + 4].toUpperCase());
 		else if(ColRowSum[1][2] > ColRowSum[1][0] && ColRowSum[1][2] > ColRowSum[1][1])
-			solutions.add(constellations[cursor + 8].toUpperCase());
+			solution = (constellations[cursor + 8].toUpperCase());
 		else
-			solutions.add(constellations[cursor + 12].toUpperCase());
+			solution = (constellations[cursor + 12].toUpperCase());
 		//System.out.println(solutions.toString());
 		if(first)
 		{
 			moveAllSpace = longestPath.substring(1);
-			constellation = solutions.get(1).toUpperCase();
+			constellation = solution.toUpperCase();
 			first = false;
 		}
 		//Prepare grid for solving
@@ -370,7 +309,7 @@ public class MysticSquare
 		for(int aa = 1; aa < longestPath.length(); aa++)
 		{
 			grid = getNumberMove(grid, longestPath.charAt(aa));
-			if(isSolved(grid, solutions))
+			if(isSolved(grid, solution) || isSolved(grid, "12345678"))
 			{
 				
 				longestPath = longestPath.substring(0, aa + 1);
@@ -380,15 +319,16 @@ public class MysticSquare
 		}
 		if(!(skip))
 		{
-			String temp = solving(grid, solutions);
-			if(temp.length() == 0)
-				return "";
+			
+			String[] solutions = {solving(grid, solution),solving(grid, "12345678")};
+			if(solutions[0].length() < solutions[1].length())
+				longestPath += solutions[0];
 			else
-				longestPath = longestPath + "" + temp;
+				longestPath += solutions[1];
 		}
 		return longestPath.substring(1);
 	}
-	private ArrayList<String> getLongestPath(String cursor, String[][] maze)
+	private String getLongestPath(String cursor, String[][] maze)
 	{
 		ArrayList<String> prev = new ArrayList<String>();
 		prev.add(cursor.toUpperCase());
@@ -432,19 +372,13 @@ public class MysticSquare
 			if(aa >= cursors.size() - 1)
 				aa = -1;
 		}
-		ArrayList<String> longestPaths = new ArrayList<String>();
-		longestPaths.add(allPaths.get(0));
+		String longestPath = allPaths.get(0);
 		for(int aa = 1; aa < allPaths.size(); aa++)
 		{
-			if(allPaths.get(aa).length() > longestPaths.get(0).length())
-			{
-				longestPaths.clear();
-				longestPaths.add(allPaths.get(aa));
-			}
-			else if(allPaths.get(aa).length() == longestPaths.get(0).length())
-				longestPaths.add(allPaths.get(aa));
+			if(allPaths.get(aa).length() > longestPath.length())
+				longestPath = allPaths.get(aa);
 		}
-		return longestPaths;
+		return longestPath;
 	}
 	private String getNumberMove(String grid, char number)
 	{
@@ -509,71 +443,84 @@ public class MysticSquare
 					return (grid.substring(0, 7) + "-" + grid.charAt(7));
 		}
 	}
-	private boolean isSolved(String grid, ArrayList<String> solutions)
+	private boolean isSolved(String grid, String solution)
 	{
-		if(grid.equals(solutions.get(0)))
-			return true;
 		for(int aa = 0; aa < 9; aa++)
 		{
-			if(solutions.get(1).charAt(aa) != '?' && solutions.get(1).charAt(aa) != grid.charAt(aa))
+			if(solution.charAt(aa) != '?' && solution.charAt(aa) != grid.charAt(aa))
 				return false;
 		}
 		return true;
 	}
-	private String solving(String grid, ArrayList<String> solutions)
+	private String solving(String grid, String solution)
 	{
 		ArrayList<String> prev = new ArrayList<String>();
 		prev.add(grid.toUpperCase());
+		ArrayList<String> current = new ArrayList<String>();
+		current.add(grid.toUpperCase());
 		ArrayList<String> presses = new ArrayList<String>();
 		presses.add("");
-		ArrayList<String> gridStates = new ArrayList<String>();
-		gridStates.add(grid.toUpperCase());
-		for(int aa = 0; aa < presses.size(); aa++)
+		while(true)
 		{
-			
-			//System.out.println(presses.size());
-			String allPresses = getPossibleNumberMoves(gridStates.get(aa));
-			ArrayList<String> possGridStates = new ArrayList<String>();
-			String possPresses = "";
-			for(int bb = 0; bb < allPresses.length(); bb++)
+			ArrayList<Integer> scores = new ArrayList<Integer>();
+			scores.add(presses.get(0).length() + getManhattenScore(current.get(0), solution));
+			int best = scores.get(0);
+			for(int i = 1; i < current.size(); i++)
 			{
-				String temp = getNumberMove(gridStates.get(aa), allPresses.charAt(bb));
-				if(!(prev.contains(temp)))
+				if(isSolved(current.get(i), solution))
+					return presses.get(i);
+				scores.add(presses.get(i).length() + getManhattenScore(current.get(i), solution));
+				if(scores.get(i) < best)
+					best = scores.get(i);
+				
+			}
+			ArrayList<String> next = new ArrayList<String>();
+			ArrayList<String> nextPress = new ArrayList<String>();
+			for(int i = 0; i < current.size(); i++)
+			{
+				if(scores.get(i) == best)
 				{
-					possGridStates.add(temp.toUpperCase());
-					possPresses = possPresses + "" + allPresses.charAt(bb);
+					String allPresses = getPossibleNumberMoves(current.get(i));
+					for(int j = 0; j < allPresses.length(); j++)
+					{
+						String temp = getNumberMove(current.get(i), allPresses.charAt(j));
+						if(!(prev.contains(temp)))
+						{
+							prev.add(temp);
+							next.add(temp);
+							nextPress.add(presses.get(i) + "" + allPresses.charAt(j));
+						}
+					}
+				}
+				else
+				{
+					next.add(current.get(i));
+					nextPress.add(presses.get(i));
 				}
 			}
-			if(possGridStates.size() > 0)
-			{
-				gridStates.set(aa,  possGridStates.get(0).toUpperCase());
-				String tempPresses = presses.get(aa).toUpperCase();
-				//System.out.println(tempPresses);
-				presses.set(aa, tempPresses.toUpperCase() + "" + possPresses.charAt(0));
-				prev.add(possGridStates.get(0).toUpperCase());
-				for(int bb = 1; bb < possGridStates.size(); bb++)
-				{
-					aa++;
-					gridStates.add(aa, possGridStates.get(bb).toUpperCase());
-					prev.add(possGridStates.get(bb).toUpperCase());
-					presses.add(aa, tempPresses + "" + possPresses.charAt(bb));
-				}
-				for(int cc = 0; cc < gridStates.size(); cc++)
-				{
-					if(isSolved(gridStates.get(cc), solutions))
-						return presses.get(cc);
-				}
-			}
-			else
-			{
-				gridStates.remove(aa);
-				presses.remove(aa);
-				aa--;
-			}
-			if(aa >= gridStates.size() - 1)
-				aa = -1;
+			current = next;
+			presses = nextPress;
 		}
-		return "";
+	}
+	private int getManhattenScore(String grid, String solution)
+	{
+		int score = 0;
+		for(int i = 0; i < solution.length(); i++)
+		{
+			if(solution.charAt(i) != '?')
+			{
+				int index = grid.indexOf(solution.charAt(i));
+				score += (difference(index / 3, i / 3) + difference(index % 3, i % 3));
+			}	
+		}
+		return score;
+	}
+	private int difference(int a, int b)
+	{
+		if(a > b)
+			return (a - b);
+		else
+			return (b - a);
 	}
 	private String getPossibleNumberMoves(String grid)
 	{

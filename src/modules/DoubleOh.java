@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class DoubleOh 
 {
 	private final int[][][][] chart =
@@ -60,9 +62,9 @@ public class DoubleOh
 				}
 			}
 		};
-	private final int pt;
+	private final PlayType pt;
 	private final boolean isSouv;
-	public DoubleOh(int p, boolean s)
+	public DoubleOh(PlayType p, boolean s)
 	{
 		pt = p;
 		isSouv = s;
@@ -78,7 +80,7 @@ public class DoubleOh
 			v = v1(input);
 		}
 		int[] current = getPos(Integer.parseInt(input));
-		if(pt == 2)
+		if(pt == PlayType.TP)
 		{
 			ArrayList<String> moveTypes = new ArrayList<String>();
 			String[] buttons = {"VERT1", "HORIZ1", "HORIZ2", "VERT2", "SUBMIT"};

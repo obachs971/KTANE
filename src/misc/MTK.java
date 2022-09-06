@@ -9,6 +9,7 @@ public class MTK
 	 * List of gates: AND, OR, XOR, NAND, NOR, XNOR, >, <
 	 * @return Result of the logic gate performed on 2 booleans
 	 */
+	
 	public boolean solveLogicExpression(boolean b1, boolean b2, String gate)
 	{
 		switch(gate)
@@ -212,6 +213,137 @@ public class MTK
 		}
 		return morse;
 	}
+	public String tapCodeToMessage(String[] code)
+	{
+		String message = "";
+		for(int aa = 0; aa < code.length; aa++)
+		{
+			switch(code[aa])
+			{
+				case "11":
+				case "A":
+					message = message + "A";
+					break;
+				case "12":
+				case "B":
+					message = message + "B";
+					break;
+				case "13":
+				case "C":
+				case "K":
+					message = message + "C";
+					break;
+				case "14":
+				case "D":
+					message = message + "D";
+					break;
+				case "15":
+				case "E":
+					message = message + "E";
+					break;
+				case "21":
+				case "F":
+					message = message + "F";
+					break;
+				case "22":
+				case "G":
+					message = message + "G";
+					break;
+				case "23":
+				case "H":
+					message = message + "H";
+					break;
+				case "24":
+				case "I":
+					message = message + "I";
+					break;
+				case "25":
+				case "J":
+					message = message + "J";
+					break;
+				case "31":
+				case "L":
+					message = message + "L";
+					break;
+				case "32":
+				case "M":
+					message = message + "M";
+					break;
+				case "33":
+				case "N":
+					message = message + "N";
+					break;
+				case "34":
+				case "O":
+					message = message + "O";
+					break;
+				case "35":
+				case "P":
+					message = message + "P";
+					break;
+				case "41":
+				case "Q":
+					message = message + "Q";
+					break;
+				case "42":
+				case "R":
+					message = message + "R";
+					break;
+				case "43":
+				case "S":
+					message = message + "S";
+					break;
+				case "44":
+				case "T":
+					message = message + "T";
+					break;
+				case "45":
+				case "U":
+					message = message + "U";
+					break;
+				case "51":
+				case "V":
+					message = message + "V";
+					break;
+				case "52":
+				case "W":
+					message = message + "W";
+					break;
+				case "53":
+				case "X":
+					message = message + "X";
+					break;
+				case "54":
+				case "Y":
+					message = message + "Y";
+					break;
+				case "55":
+				case "Z":
+					message = message + "Z";
+					break;
+				default:
+					return "";
+			}
+		}
+		return message;
+	}
+	public String[] messageToTapCode(String message)
+	{
+		String alpha = "ABCDEFGHIJLMNOPQRSTUVWXYZ";
+		message = message.replace("K", "C");
+		String[] tapCode = new String[message.length()];
+		for(int aa = 0; aa < message.length(); aa++)
+		{
+			if(alpha.indexOf(message.charAt(aa)) < 0)
+				return null;
+			else
+			{
+				int index = alpha.indexOf(message.charAt(aa));
+				tapCode[aa] = ((index / 5) + 1) + "" + ((index % 5) + 1);
+			}		
+		}
+		return tapCode;
+	}
 	public String brailleToMessage(String braille)
 	{
 		String message = "";
@@ -375,6 +507,24 @@ public class MTK
 		}
 		return message;
 	}
+	public String baseConvert(String num, int base1, int base2)
+	{
+		String alpha = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		long mult = 1;
+		long sum = 0;
+		for(int i = num.length() - 1; i >= 0; i--)
+		{
+			sum += (mult * alpha.indexOf(num.charAt(i)));
+			mult *= base1;
+		}
+		String out = "";
+		do
+		{
+			out = alpha.charAt((int)(sum % base2)) + "" + out;
+			sum /= base2;
+		}while(sum > 0);
+		return out;
+	}
 	public String getMazeSolution(String[][] maze, int numFront, String curr, String goal)
 	{
 		ArrayList<String> cursors = new ArrayList<String>();
@@ -436,5 +586,67 @@ public class MTK
 		}
 		return "";
 	}
-	
+	public String getMazeSolution(String[][] maze, int numFront, String curr, ArrayList<String> goals)
+	{
+		ArrayList<String> cursors = new ArrayList<String>();
+		ArrayList<String> togglePaths = new ArrayList<String>();
+		ArrayList<String> prev = new ArrayList<String>();
+		cursors.add(curr.toUpperCase());
+		togglePaths.add("");
+		prev.add(curr.toUpperCase());
+		for(int aa = 0; aa < cursors.size(); aa++)
+		{
+			for(int bb = 0; bb < maze.length; bb++)
+			{
+				if(maze[bb][0].equals(cursors.get(aa)))
+				{
+					ArrayList<String> poss = new ArrayList<String>();
+					ArrayList<String> possToggle = new ArrayList<String>();
+					for(int cc = 1; cc < maze[bb].length; cc++)
+					{
+						if(!(prev.contains(maze[bb][cc].substring(numFront))))
+						{
+							if(numFront == 0)
+							{
+								poss.add(maze[bb][cc].substring(0));
+								possToggle.add(maze[bb][cc].substring(0));
+							}
+							else
+							{
+								poss.add(maze[bb][cc].substring(numFront));
+								possToggle.add(maze[bb][cc].substring(0, numFront));
+							}
+						}
+					}
+					if(poss.size() > 0)
+					{
+						prev.addAll(poss);
+						String tempToggle = togglePaths.get(aa).toUpperCase();
+						cursors.set(aa, poss.get(0).toUpperCase());
+						togglePaths.set(aa, tempToggle + "" + possToggle.get(0).toUpperCase());
+						for(int cc = 1; cc < poss.size(); cc++)
+						{
+							aa++;
+							cursors.add(aa, poss.get(cc).toUpperCase());;
+							togglePaths.add(aa, tempToggle + "" + possToggle.get(cc).toUpperCase());
+						}
+						ArrayList<String> tempList = new ArrayList<String>(cursors);
+						tempList.retainAll(goals);
+						if(tempList.size() > 0)
+							return togglePaths.get(cursors.indexOf(tempList.get(0)));
+					}
+					else
+					{
+						cursors.remove(aa);
+						togglePaths.remove(aa);
+						aa--;
+					}
+					break;
+				}
+			}
+			if(aa >= cursors.size() - 1)
+				aa = -1;
+		}
+		return "";
+	}
 }

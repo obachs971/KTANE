@@ -123,7 +123,7 @@ public class Hexamaze
 		//Getting the list of goals
 		ArrayList<String> goals = new ArrayList<String>();
 		String souv = "PAWN COLOR: ";
-		System.out.println(maze[0][0]);
+		//System.out.println(maze[0][0]);
 		switch(input.charAt(0))
 		{
 			case 'R':
@@ -175,24 +175,11 @@ public class Hexamaze
 				souv = souv + "PINK";
 				break;
 		}
-		//Time to get a list of solutions for the maze
-		ArrayList<String> solutions = new ArrayList<String>();
+		//Time to get the best solution for the maze
+		
 		MTK mtk = new MTK();
-		for(int aa = 0; aa < goals.size(); aa++)
-		{
-			solutions.add(mtk.getMazeSolution(maze, 1, current, goals.get(aa)));
-			if(solutions.get(solutions.size() - 1).length() == 0)
-				solutions.remove(solutions.size() - 1);
-		}
-		int best = solutions.get(0).length(), bestCur = 0;
-		for(int aa = 1; aa < solutions.size(); aa++)
-		{
-			if(solutions.get(aa).length() < best)
-			{
-				best = solutions.get(aa).length();
-				bestCur = aa;
-			}
-		}
+		String solution = mtk.getMazeSolution(maze, 1, current, goals);
+		
 		/*
 		 * Now it's time to rotate the directions of the best solution
 		 * And since they are numbers, we're just gonna add the
@@ -200,9 +187,9 @@ public class Hexamaze
 		 */
 		String[] dir = {"N", "NE", "SE", "S", "SW", "NW"};
 		String out = "";
-		for(int aa = 0; aa < solutions.get(bestCur).length(); aa++)
+		for(int aa = 0; aa < solution.length(); aa++)
 		{
-			out = out + "" + dir[mod("012345".indexOf(solutions.get(bestCur).charAt(aa)) - mazeInfo[2], 6)] + " ";
+			out = out + "" + dir[mod("012345".indexOf(solution.charAt(aa)) - mazeInfo[2], 6)] + " ";
 			if((aa + 1) % 4 == 0)
 				out = out + "\n";
 		}

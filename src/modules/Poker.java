@@ -20,19 +20,30 @@ public class Poker
 	}
 	public void run()
 	{
-		String card = JOptionPane.showInputDialog("AS, KH, 5D, 2C\nEnter the card:").toUpperCase();
-		boolean v = v1(card);
-		while(!(v))
-		{
-			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-			card = JOptionPane.showInputDialog("AS, KH, 5D, 2C\nEnter the card:").toUpperCase();
-			v = v1(card);
-		}
-		step1(card);
-		String[] responses = {"Terrible Play!", "Awful Play!", "Really?", "Really, really?", "Sure about that?", "Are you sure?"};
+		String[][] cards = {
+				{"AS", "KH", "5D", "2C"},
+				{"Ace of Spades", "King of Hearts", "Five of Diamonds", "Two of Clubs"}
+		};
 		JFrame frame = new JFrame();
 		JOptionPane optionPane = new JOptionPane();
-		JButton[] jButton = new JButton[responses.length];
+		JButton[] jButton = new JButton[4];
+		optionPane.setLayout(new GridLayout(2, 2));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		for(int aa = 0; aa < 4; aa++)
+		{
+			jButton[aa] = getButton(optionPane, cards[0][aa], cards[1][aa]);
+			optionPane.add(jButton[aa]);
+		}
+		JDialog dialog = optionPane.createDialog(frame, "");
+		dialog.setTitle("Select the Displayed Card:");
+		dialog.setVisible(true);
+		String card = (String)optionPane.getValue();
+		step1(card);
+		String[] responses = {"Terrible Play!", "Awful Play!", "Really?", "Really, really?", "Sure about that?", "Are you sure?"};
+		frame = new JFrame();
+		optionPane = new JOptionPane();
+		jButton = new JButton[responses.length];
 		optionPane.setLayout(new GridLayout(3, 2));
 		optionPane.setOptions(new Object[] {});
 		optionPane.removeAll();
@@ -41,18 +52,18 @@ public class Poker
 			jButton[aa] = getButton(optionPane, (aa + ""), responses[aa]);
 			optionPane.add(jButton[aa]);
 		}
-		JDialog dialog = optionPane.createDialog(frame, "");
+		dialog = optionPane.createDialog(frame, "");
 		dialog.setTitle("Select the response:");
 		dialog.setVisible(true);
 		int response = Integer.parseInt(((String)optionPane.getValue()));
 		step2(card, response);
 		String input = JOptionPane.showInputDialog("S, H, C, D\nEnter the bet and\nthe 4 suits (spaces):").toUpperCase();
-		v = v2(input);
+		boolean v = valid(input);
 		while(!(v))
 		{
 			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
 			input = JOptionPane.showInputDialog("S, H, C, D\nEnter the bet and\nthe 4 suits (spaces):").toUpperCase();
-			v = v2(input);
+			v = valid(input);
 		}
 		step3(card, response, input.split(" "));
 	}
@@ -590,17 +601,7 @@ public class Poker
 	    button.addActionListener(actionListener);
 	    return button;
 	  }
-	private boolean v1(String i)
-	{
-		switch(i)
-		{
-			case "AS":case "KH":case "5D":case "2C":
-				return true;
-			default:
-				return false;
-		}
-	}
-	private boolean v2(String i)
+	private boolean valid(String i)
 	{
 		String[] conv = i.split(" ");
 		if(conv.length == 2)

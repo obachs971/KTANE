@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Image;
 
 import javax.swing.*;
+
+import misc.PlayType;
 public class MouseInTheMaze 
 {
-	private final int playType;
+	private final PlayType playType;
 	private final double resize;
-	public MouseInTheMaze(int pt, double r)
+	public MouseInTheMaze(PlayType pt, double r)
 	{
 		playType = pt;
 		resize = r;
@@ -65,7 +67,7 @@ public class MouseInTheMaze
 		f.setLayout(new BorderLayout());
 		f.add(l, BorderLayout.CENTER);
 		f.pack();
-		if(playType == 1)
+		if(playType == PlayType.Team)
 		{
 			String[][] table = {
 					{"WHITE", "YELLOW", "GREEN", "BLUE"},

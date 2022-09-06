@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class ThirdBase 
 {
 	private final String[][] table =
@@ -37,8 +39,8 @@ public class ThirdBase
 				{"ZSN8", "8I99", "SNZX", "ZHOX"},
 				{"SZN6", "S89H", "8I99", "HZN9", "IS9H", "ZSN8"}
 		};
-	private final int pt;
-	public ThirdBase(int p)
+	private final PlayType pt;
+	public ThirdBase(PlayType p)
 	{
 		pt = p;
 	}
@@ -46,7 +48,7 @@ public class ThirdBase
 	{
 		ArrayList<String> displayed = new ArrayList<String>();
 		int flip = JOptionPane.showConfirmDialog(null, "Are you flipping the module?");
-		if(pt == 1)
+		if(pt == PlayType.Team)
 		{
 			for(int zz = 0; zz < 3; zz++)
 			{

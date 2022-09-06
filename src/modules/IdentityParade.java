@@ -1,7 +1,13 @@
 package modules;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class IdentityParade 
@@ -27,48 +33,40 @@ public class IdentityParade
 				{"QUENTIN", "WHITE", "HUNCHED", "BLAZER"},
 				{"RHIANNON", "BLACK", "MUSCULAR", "JUMPER"}
 		};
+	private String sub;
 	public String run()
 	{
 		String souv = "";
 		ArrayList<String> hair = new ArrayList<String>(), build = new ArrayList<String>(), attire = new ArrayList<String>();
+		String[] temp = {"Red", "Blonde", "Brown", "Black", "Grey", "White"};
+		for(int aa = 0; aa < 3; aa++)
+		{
+			JDialog dialog = getDialog(temp, 2);
+			dialog.setTitle("Select Hair Color #" + (aa + 1) + ":");
+			dialog.setVisible(true);
+			hair.add(sub.toUpperCase());
+			temp = remove(temp, sub);
+			souv = souv + "HAIR COLOR #" + (aa + 1) + ": " + hair.get(aa) + "\n";
+		}
+		temp = new String[] {"Short", "Tall", "Fat", "Slim", "Muscular", "Hunched"};
+		for(int aa = 0; aa < 3; aa++)
+		{
+			JDialog dialog = getDialog(temp, 2);
+			dialog.setTitle("Select Build #" + (aa + 1) + ":");
+			dialog.setVisible(true);
+			build.add(sub.toUpperCase());
+			temp = remove(temp, sub);
+			souv = souv + "BUILD #" + (aa + 1) + ": " + build.get(aa) + "\n";
+		}
+		temp = new String[] {"Suit", "T-Shirt", "Hoodie", "Tank Top", "Blazer", "Jumper"};
 		for(int aa = 0; aa < 3; aa++)
 		{
 			
-			String input = JOptionPane.showInputDialog("Enter hair color #" + (aa + 1) + ":").toUpperCase();
-			boolean v = v1(input, " RED BLONDE BROWN BLACK GREY GRAY WHITE ", hair);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Enter hair color #" + (aa + 1) + ":").toUpperCase();
-				v = v1(input, " RED BLONDE BROWN BLACK GREY GRAY WHITE ", hair);
-			}
-			hair.add(input.replace("GRAY", "GREY"));
-			souv = souv + "HAIR COLOR #" + (aa + 1) + ": " + hair.get(aa) + "\n";
-		}
-		for(int aa = 0; aa < 3; aa++)
-		{
-			String input = JOptionPane.showInputDialog("Enter body build #" + (aa + 1) + ":").toUpperCase();
-			boolean v = v1(input, " SHORT TALL FAT SLIM MUSCULAR HUNCHED ", build);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Enter body build #" + (aa + 1) + ":").toUpperCase();
-				v = v1(input, " SHORT TALL FAT SLIM MUSCULAR HUNCHED ", build);	
-			}
-			build.add(input.toUpperCase());
-			souv = souv + "BUILD #" + (aa + 1) + ": " + build.get(aa) + "\n";
-		}
-		for(int aa = 0; aa < 3; aa++)
-		{
-			String input = JOptionPane.showInputDialog("Enter attire #" + (aa + 1) + ":").toUpperCase();
-			boolean v = v1(input, attire);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Enter attire #" + (aa + 1) + ":").toUpperCase();
-				v = v1(input, attire);
-			}
-			attire.add(input.replace("T SHIRT", "T-SHIRT"));
+			JDialog dialog = getDialog(temp, 2);
+			dialog.setTitle("Select Attire #" + (aa + 1) + ":");
+			dialog.setVisible(true);
+			attire.add(sub.toUpperCase());
+			temp = remove(temp, sub);
 			souv = souv + "ATTIRE #" + (aa + 1) + ": " + attire.get(aa) + "\n";
 		}
 		ArrayList<String[]> list = new ArrayList<String[]>();
@@ -79,54 +77,79 @@ public class IdentityParade
 		}
 		if(list.size() > 1)
 		{
-			String out = "";
-			for(int aa = 0; aa < list.size(); aa++)
-				out = out + "\n" + (aa + 1) + ": " + list.get(aa)[0];
-			String input = JOptionPane.showInputDialog("Select the present name:" + out);
-			boolean v = v2(input, list);
-			while(!(v))
-			{
-				JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-				input = JOptionPane.showInputDialog("Select the present name:" + out);
-				v = v2(input, list);
-			}
-			String[] temp = list.get(Integer.parseInt(input) - 1);
+			JDialog dialog = getDialog(list, 2);
+			dialog.setTitle("Select the Present Name:");
+			dialog.setVisible(true);
+			temp = list.get(Integer.parseInt(sub));
 			list.clear();
 			list.add(temp);
 		}
 		JOptionPane.showMessageDialog(null, "Submit this config:\nHair: " + list.get(0)[1] + "\nBuild: " + list.get(0)[2] + "\nAttire: " + list.get(0)[3] + "\nName: " + list.get(0)[0]);
 		return souv;
 	}
-	private boolean v1(String i, String op, ArrayList<String> l)
+	private JDialog getDialog(String[] arr, int div)
 	{
-		return (op.indexOf((" " + i + " ")) >= 0 && !(l.contains(i)));
-	}
-	private boolean v1(String i, ArrayList<String> l)
-	{
-		switch(i)
+		JFrame frame = new JFrame();
+		JOptionPane optionPane = new JOptionPane();
+		JButton[] jButton = new JButton[arr.length];
+		optionPane.setLayout(new GridLayout(arr.length / div + (arr.length % div), div));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		for(int aa = 0; aa < arr.length; aa++)
 		{
-			case "T-SHIRT":
-			case "T SHIRT":
-			case "BLAZER":
-			case "JUMPER":
-			case "TANK TOP":
-			case "HOODIE":
-			case "SUIT":
-				return !(l.contains(i));
+			jButton[aa] = getButton(optionPane, arr[aa]);
+			optionPane.add(jButton[aa]);
 		}
-		return false;
+		return optionPane.createDialog(frame, "");
 	}
-	private boolean v2(String i, ArrayList<String[]> l)
+	private JButton getButton(final JOptionPane optionPane, String text) {
+	    final JButton button = new JButton();
+	    button.setText(text);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(text.toUpperCase());
+	        sub = text.toUpperCase();
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
+	private JDialog getDialog(ArrayList<String[]> arr, int div)
 	{
-		if(i.length() > 0)
+		JFrame frame = new JFrame();
+		JOptionPane optionPane = new JOptionPane();
+		JButton[] jButton = new JButton[arr.size()];
+		optionPane.setLayout(new GridLayout(arr.size() / div + (arr.size() % div), div));
+		optionPane.setOptions(new Object[] {});
+		optionPane.removeAll();
+		for(int aa = 0; aa < arr.size(); aa++)
 		{
-			for(int aa = 0; aa < i.length(); aa++)
-			{
-				if("0123456789".indexOf(i.charAt(aa)) < 0)
-					return false;
-			}
-			return (Integer.parseInt(i) >= 1 && Integer.parseInt(i) <= l.size());
+			jButton[aa] = getButton(optionPane, arr.get(aa)[0], (aa + ""));
+			optionPane.add(jButton[aa]);
 		}
-		return false;
+		return optionPane.createDialog(frame, "");
+	}
+	private JButton getButton(final JOptionPane optionPane, String text, String val) {
+	    final JButton button = new JButton();
+	    button.setText(text);
+	    ActionListener actionListener = new ActionListener() {
+	      public void actionPerformed(ActionEvent actionEvent) {
+	        optionPane.setValue(text.toUpperCase());
+	        sub = val;
+	      }
+	    };
+	    button.addActionListener(actionListener);
+	    return button;
+	  }
+	private String[] remove(String[] arr, String str)
+	{
+		String[] conv = new String[arr.length - 1];
+		int cur = 0;
+		for(int i = 0; i < arr.length; i++)
+		{
+			if(!(arr[i].equalsIgnoreCase(str)))
+				conv[cur++] = arr[i];
+		}
+		return conv;
 	}
 }

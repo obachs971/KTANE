@@ -12,19 +12,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class SET 
 {
 	private int symbolNumber;
-	private final int playType;
+	private final PlayType playType;
 	private final double r;
-	public SET(int pt, double resizer)
+	public SET(PlayType pt, double resizer)
 	{
 		playType = pt;
 		r = resizer;
 	}
 	public void run()
 	{
-		if(playType == 1)
+		if(playType == PlayType.Team)
 		{
 			ImageIcon[] images = new ImageIcon[9];
 			JLabel[] labels = new JLabel[9];

@@ -1,6 +1,7 @@
 package modules;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.JOptionPane;
 
@@ -19,18 +20,19 @@ public class ChordQualities
 		};
 	public String run()
 	{
-		String input = JOptionPane.showInputDialog("Enter the 4 highlighted notes\nin clocwise order (spaces)").toUpperCase();
+		String input = JOptionPane.showInputDialog("Enter the highlighted notes (spaces)").toUpperCase();
 		boolean v = valid(input);
 		while(!(v))
 		{
 			JOptionPane.showMessageDialog(null, "ERROR", "", JOptionPane.ERROR_MESSAGE);
-			input = JOptionPane.showInputDialog("Enter the 4 highlighted notes\nin clocwise order (spaces)").toUpperCase();
+			input = JOptionPane.showInputDialog("Enter the highlighted notes (spaces)").toUpperCase();
 			v = valid(input);
 		}
 		String[] temp = input.split(" "), noteName = {"A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"}, chordName = {"7", "-7", "MAJ7", "-MAJ7", "7#9", "DIM", "ADD9", "-ADD9", "7#5", "MAJ7#5", "7SUS", "-MAJ7#5"};
 		ArrayList<Integer> notes = new ArrayList<Integer>();
 		for(int aa = 0; aa < 4; aa++)
 			notes.add(noteToNum(temp[aa]));
+		Collections.sort(notes);
 		int[] chord = getChord(notes);
 		String souv = "GIVEN CHORD: " + noteName[chord[0]] + " " + chordName[chord[1]];
 		//System.out.println(noteName[chord[0]] + " " + chordName[chord[1]]);
@@ -111,6 +113,7 @@ public class ChordQualities
 				if(notes.get(aa) == -1)
 					return false;
 			}
+			Collections.sort(notes);
 			if(getChord(notes) != null)
 				return true;
 		}

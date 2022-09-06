@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
 import start.BombEdgework;
 
 public class SimonScreams 
@@ -27,9 +28,9 @@ public class SimonScreams
 			"BRPGYO"
 		};
 	private final BombEdgework ew;
-	private final int pt;
+	private final PlayType pt;
 	private final boolean isSouv;
-	public SimonScreams(BombEdgework e, int p, boolean s)
+	public SimonScreams(BombEdgework e, PlayType p, boolean s)
 	{
 		ew = e;
 		pt = p;
@@ -51,7 +52,7 @@ public class SimonScreams
 		if(ew.BH() >= 3)
 			rows.add(5);
 		String souv = "";
-		if(pt == 1 && !(isSouv))
+		if(pt == PlayType.Team && !(isSouv))
 		{
 			String flash = JOptionPane.showInputDialog("R - Red\nO - Orange\nY - Yellow\nG - Green\nB - Blue\nP - Purple\nEnter the 1st 3 flashing colors:").toUpperCase();
 			boolean v = v3(flash);

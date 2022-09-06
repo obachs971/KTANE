@@ -2,6 +2,8 @@ package modules;
 
 import javax.swing.JOptionPane;
 
+import misc.PlayType;
+
 public class ButtonSequence 
 {
 	private String[][] table =
@@ -11,8 +13,8 @@ public class ButtonSequence
 				{"HCIR", "ASQU", "DHEX", "PSQU", "PHEX"},
 				{"HHEX", "DSQU", "PHEX", "ACIR", "DSQU"}
 		};
-	private final int playType;
-	public ButtonSequence(int pt)
+	private final PlayType playType;
+	public ButtonSequence(PlayType pt)
 	{
 		playType = pt;	
 	}
@@ -46,7 +48,7 @@ public class ButtonSequence
 	}
 	private String hold()
 	{
-		if(playType == 0)
+		if(playType == PlayType.EFM)
 		{
 			return "Blue - 2\nYellow - 3\nMagenta - 4\nCyan - 0\nWhite - 7\nHold and release when the\ncountdown timer has that\ndigit associated with the color";
 		}
